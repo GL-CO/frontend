@@ -1,8 +1,8 @@
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
 const bgImage = styled.div`
-  width : 50%
-  height:400px
+  width: 50%;
+  height: 400px;
 `;
 
 export default function Home() {
