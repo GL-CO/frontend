@@ -1,0 +1,52 @@
+[
+  {
+    "email": "user0@example.com",
+    "pwd": "password0",
+    "username": "사용자0"
+  },
+  {
+    "email": "user1@example.com",
+    "pwd": "password1",
+    "username": "사용자1"
+  },
+  {
+    "email": "user2@example.com",
+    "pwd": "password2",
+    "username": "사용자2"
+  },
+  {
+    "email": "user3@example.com",
+    "pwd": "password3",
+    "username": "사용자3"
+  },
+  {
+    "email": "user4@example.com",
+    "pwd": "password4",
+    "username": "사용자4"
+  },
+  {
+    "email": "user5@example.com",
+    "pwd": "password5",
+    "username": "사용자5"
+  },
+  {
+    "email": "user6@example.com",
+    "pwd": "password6",
+    "username": "사용자6"
+  },
+  {
+    "email": "user7@example.com",
+    "pwd": "password7",
+    "username": "사용자7"
+  },
+  {
+    "email": "user8@example.com",
+    "pwd": "password8",
+    "username": "사용자8"
+  },
+  {
+    "email": "user9@example.com",
+    "pwd": "password9",
+    "username": "사용자9"
+  }
+]
