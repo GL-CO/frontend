@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import dummyData from "../../dummyData.json";
 import { useMutation } from "react-query";
 async function signUpUser({ username }) {
-  const res = await fetch("/api/users/login", {
+  const res = await fetch("http://localhost:8000/api/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
