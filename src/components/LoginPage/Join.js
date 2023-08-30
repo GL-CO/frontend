@@ -1,34 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useQuery } from "react-query";
-import dummyData from "../../dummyData.json";
-import { useMutation } from "react-query";
-async function signUpUser({ username }) {
-  const res = await fetch("http://localhost:8000/api/users/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ username }),
-  });
-  if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.error);
-  }
-  const data = await res.json();
-  return data;
-}
-async function testSignUpUser() {
-  const userData = { username: "user0" };
-  try {
-    const res = await signUpUser(userData);
-    console.log("로그인성공", res);
-  } catch (error) {
-    console.error("로그인실패", error.message);
-  }
-}
+
 const Join = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,13 +33,6 @@ const Join = () => {
     return true;
   };
 
-  const mutation = useMutation(signUpUser);
-  const handleSignUp = (event) => {
-    event.preventDefault();
-    mutation.mutate({ username });
-    console.log(mutation);
-  };
-  testSignUpUser();
   return (
     <JoinWrapper>
       <Container>
@@ -118,7 +85,7 @@ const Join = () => {
               />
             </Label>
 
-            <SubmitButton onClick={handleSignUp}>Sign Up</SubmitButton>
+            <SubmitButton onClick="">Sign Up</SubmitButton>
           </form>
         </FormContainer>
       </Container>
