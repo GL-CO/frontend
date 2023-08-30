@@ -3,26 +3,35 @@ const NavbarContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 50px 200px;
+  padding: 50px 100px;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 const Logo = styled.div`
   font-size: 30px;
   font-weight: bold;
-  /* margin-right: -100px; */
 `;
 
 const MenuContainer = styled.div`
-  margin-right: 50px;
   display: flex;
+  justify-content: space-around;
+  margin-right: 50px;
+  align-items: center;
 `;
 const MenuItem = styled.a`
   margin-right: 70px;
+  text-decoration: none;
+  padding: 10px;
+  /* color: #fff; */
+  &:hover {
+    background-color: red;
+  }
 `;
 
 const ButtonContainer = styled.div`
-  width: 20%;
+  width: 50%;
   display: flex;
-  /* justify-content: space-between; */
+  overflow: hidden;
 `;
 const SignInButton = styled.div`
   margin-right: 30px;
