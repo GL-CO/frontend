@@ -52,6 +52,7 @@ export default function NavBar() {
       <ButtonContainer>
         <SignInButton>Sign In</SignInButton>
         <SignUpButton>Sign Up</SignUpButton>
+        <div>로그인유무 아이콘</div>
       </ButtonContainer>
     </NavbarContainer>
   );
