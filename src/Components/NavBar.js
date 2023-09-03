@@ -1,47 +1,57 @@
+// import { useState } from "react";
 import styled from "styled-components";
-const NavbarContainer = styled.div`
+const Container = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 50px 100px;
-  overflow: hidden;
+  align-items: center;
+  padding: 50px;
   white-space: nowrap;
 `;
 const Logo = styled.div`
+  margin-left: 10%;
   font-size: 30px;
   font-weight: bold;
 `;
 
-const MenuContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin-right: 50px;
-  align-items: center;
-`;
+const MenuContainer = styled.div``;
 const MenuItem = styled.a`
   margin-right: 70px;
   text-decoration: none;
-  padding: 10px;
-  /* color: #fff; */
   &:hover {
     background-color: red;
   }
 `;
 
 const ButtonContainer = styled.div`
-  width: 50%;
   display: flex;
-  overflow: hidden;
+  margin-right: 10%;
 `;
-const SignInButton = styled.div`
+const SignUpButton = styled.button`
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  background-color: white;
+  &:hover {
+    background-color: red;
+  }
+`;
+const SignInButton = styled.button`
   margin-right: 30px;
-  background-color: ;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-left: 20px;
+  background-color: white;
+  &:hover {
+    background-color: red;
+  }
 `;
-const SignUpButton = styled.div``;
 
 export default function NavBar() {
   return (
-    <NavbarContainer>
+    <Container>
       <Logo>GL-CO</Logo>
       <MenuContainer>
         <MenuItem href="/home">홈</MenuItem>
@@ -50,10 +60,9 @@ export default function NavBar() {
         <MenuItem href="/home">문의</MenuItem>
       </MenuContainer>
       <ButtonContainer>
-        <SignInButton>Sign In</SignInButton>
         <SignUpButton>Sign Up</SignUpButton>
-        <div>로그인유무 아이콘</div>
+        <SignInButton>Sign In</SignInButton>
       </ButtonContainer>
-    </NavbarContainer>
+    </Container>
   );
 }

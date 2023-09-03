@@ -131,16 +131,16 @@ export default function Home() {
           <StoryText>t11111111111111111111111111111111111111</StoryText>
         </StoryBox>
         <StoryBox>
-          <div>p2</div>
-          <div>t2</div>
+          <StoryProfile>사진</StoryProfile>
+          <StoryText>t11111111111111111111111111111111111111</StoryText>
         </StoryBox>
         <StoryBox>
-          <div className="프로필"></div>
-          <div className="텍스트">1</div>
+          <StoryProfile>사진</StoryProfile>
+          <StoryText>t11111111111111111111111111111111111111</StoryText>
         </StoryBox>
         <StoryBox>
-          <div className="프로필"></div>
-          <div className="텍스트">1</div>
+          <StoryProfile>사진</StoryProfile>
+          <StoryText>t11111111111111111111111111111111111111</StoryText>
         </StoryBox>
       </Container>
     </div>
