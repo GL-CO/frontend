@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/LoginPage/Login";
-import Join from "./components/LoginPage/Join";
+import Login from "./pages/LoginPage/Login";
+import Join from "./pages/LoginPage/Join";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();

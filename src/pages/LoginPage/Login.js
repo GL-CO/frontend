@@ -11,7 +11,7 @@ const Login = () => {
         <SignUpcontainer>
           <h1>반갑습니다!</h1>
           <p> 회원가입 하러 가기 </p>
-          <JoinLink href="/Join"> Sign Up </JoinLink>
+          <JoinLink href="/Join"> Sign In </JoinLink>
         </SignUpcontainer>
 
         <FormContainer>
