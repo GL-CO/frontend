@@ -36,15 +36,18 @@ const SendButton = styled.button`
     background-color: red;
   }
 `;
+const FormContainer = styled.form``;
 export default function Write() {
   return (
     <div>
       <NavBar></NavBar>
       <Container>
         <Tag>태그</Tag>
-        <InputTitle placeholder="제목을 입력하세요"></InputTitle>
-        <InputText placeholder="내용을 입력하세요"></InputText>
-        <SendButton>제출하기</SendButton>
+        <FormContainer>
+          <InputTitle placeholder="제목을 입력하세요"></InputTitle>
+          <InputText placeholder="내용을 입력하세요"></InputText>
+          <SendButton>제출하기</SendButton>
+        </FormContainer>
       </Container>
     </div>
   );
