@@ -1,6 +1,7 @@
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
 const Container = styled.div`
+  /* display: flex; */
   width: 50%;
   margin: 0 auto;
   background-color: #888;
@@ -24,15 +25,26 @@ const InputText = styled.input`
   margin: 20px;
   border-radius: 5px;
 `;
+const SendButton = styled.button`
+  display: flex;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  background-color: white;
+  &:hover {
+    background-color: red;
+  }
+`;
 export default function Write() {
   return (
     <div>
       <NavBar></NavBar>
       <Container>
         <Tag>태그</Tag>
-        <InputTitle></InputTitle>
-        <InputText></InputText>
-        <div>제출버튼추가미완</div>
+        <InputTitle placeholder="제목을 입력하세요"></InputTitle>
+        <InputText placeholder="내용을 입력하세요"></InputText>
+        <SendButton>제출하기</SendButton>
       </Container>
     </div>
   );
