@@ -9,7 +9,8 @@ const Join = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [username, setUsername] = useState("");
   const [nickname, setNickname] = useState("");
-
+  const [userData, setUserData] = useState([]);
+  const [isSuccess, setIsSuccess] = useState(false);
   const handleEmailChange = (event) => {
     setEmail(event.currentTarget.value);
   };
@@ -32,9 +33,55 @@ const Join = () => {
     }
     return true;
   };
+  const toggleBoxButton = () => {
+    setIsSuccess(!isSuccess);
+  };
+  const handleSubmit = (e) => {
+    // if(!) 로그인박스 화면떠서 로그인유도
+    e.preventDefault();
+    const userData = {
+      email: email,
+      password: password,
+      name: username,
+      nickname: nickname,
+      usingLanguage: "한국어",
+      learningLanguage: "English",
+    };
+    onClickSignUp(userData);
+  };
+  const onClickSignUp = (userData) => {
+    const URL =
+      "http://ec2-43-201-96-213.ap-northeast-2.compute.amazonaws.com:8080/v1/user/signup";
+
+    fetch(URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Response Error : ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setUserData(data);
+        setIsSuccess(!isSuccess);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  console.log("userData : ", userData);
 
   return (
     <JoinWrapper>
+      {isSuccess && <Success>hihi</Success>}
+      <button onClick={toggleBoxButton}>박스 치우기</button>
+
       <Container>
         <SignIncontainer>
           <h1> 환영합니다! </h1>
@@ -43,13 +90,14 @@ const Join = () => {
         </SignIncontainer>
 
         <FormContainer>
-          <form action="/join">
+          <form action="/join" onSubmit={handleSubmit}>
             <h1>Sign Up</h1>
             <Label>
               <Input
                 type="email"
                 placeholder="email"
                 onChange={handleEmailChange}
+                required
               />
             </Label>
 
@@ -58,6 +106,7 @@ const Join = () => {
                 type="password"
                 placeholder="password"
                 onChange={handlePasswordChange}
+                required
               />
             </Label>
 
@@ -66,6 +115,7 @@ const Join = () => {
                 type="password"
                 placeholder="confirmPassword"
                 onChange={handleConfirmPasswordChange}
+                required
               />
             </Label>
 
@@ -74,6 +124,7 @@ const Join = () => {
                 type="username"
                 placeholder="username"
                 onChange={handleUsernameChange}
+                required
               />
             </Label>
 
@@ -82,10 +133,11 @@ const Join = () => {
                 type="username"
                 placeholder="nickname"
                 onChange={handleNicknameChange}
+                required
               />
             </Label>
 
-            <SubmitButton onClick="">Sign Up</SubmitButton>
+            <SubmitButton>Sign Up</SubmitButton>
           </form>
         </FormContainer>
       </Container>
@@ -94,7 +146,16 @@ const Join = () => {
 };
 
 export default Join;
-
+const Success = styled.div`
+  position: absolute; /* 절대 위치로 설정 */
+  top: 50%; 화면 상단에 위치
+  left: 50%; 화면 왼쪽에 위치
+  transform: translate(50%, 50%);
+  background-color: white; /* 배경색 설정 */
+  z-index: 2; /* 화면 맨 앞에 오도록 높은 z-index 값 설정 */
+  padding: 200px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 (선택 사항) */
+`;
 const JoinWrapper = styled.div`
   display: flex;
   justify-content: center;
