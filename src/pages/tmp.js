@@ -54,36 +54,46 @@ const StyledForm = () => {
     email: "",
     message: "",
   });
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value,
+  //   });
+  // };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("입력된 데이터:", formData);
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("입력된 데이터:", formData);
+  // };
   return (
     <FormContainer>
       <Title>문의하기</Title>
       <form>
         <FormGroup>
           <Label htmlFor="name">이름:</Label>
-          <Input type="text" id="name" name="name" />
+          <Input type="text" id="name" name="name" required />
         </FormGroup>
         <FormGroup>
           <Label htmlFor="email">이메일:</Label>
-          <Input type="email" id="email" name="email" />
+          <Input type="email" id="email" name="email" required />
         </FormGroup>
         <FormGroup>
           <Label htmlFor="message">메시지:</Label>
-          <Textarea id="message" name="message" />
+          <Textarea id="message" name="message" required />
         </FormGroup>
         <Button type="submit">전송</Button>
       </form>
+      <div>
+        <FormContainer>
+          <form action="/join">
+            <h1>Sign Up</h1>
+            <Label>
+              <Input type="email" placeholder="email" required />
+            </Label>
+          </form>
+        </FormContainer>
+      </div>
     </FormContainer>
   );
 };

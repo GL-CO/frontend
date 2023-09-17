@@ -4,6 +4,7 @@ import Write from "./pages/Write";
 import Home from "./pages/Home";
 import Challenge from "./pages/Challenge";
 import Join from "./pages/LoginPage/Join";
+import Tmp from "./pages/tmp";
 function App() {
   return (
     <BrowserRouter>
@@ -12,7 +13,8 @@ function App() {
         <Route path="/write" element={<Write />}></Route>
         <Route path="/" element={<Home />}></Route>
         <Route path="/challenge" element={<Challenge />}></Route>
-        <Route path="/Join" element={<Join />}></Route>
+        <Route path="/join" element={<Join />}></Route>
+        <Route path="/tmp" element={<Tmp />}></Route>
       </Routes>
     </BrowserRouter>
   );
