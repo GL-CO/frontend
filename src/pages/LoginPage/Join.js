@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
-
+import NavBar from "../../Components/NavBar";
 const Join = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -78,70 +78,73 @@ const Join = () => {
   console.log("userData : ", userData);
 
   return (
-    <JoinWrapper>
-      {isSuccess && <Success>hihi</Success>}
-      <button onClick={toggleBoxButton}>박스 치우기</button>
+    <div>
+      <NavBar></NavBar>
+      <JoinWrapper>
+        {isSuccess && <Success>hihi</Success>}
+        <button onClick={toggleBoxButton}>박스 치우기</button>
 
-      <Container>
-        <SignIncontainer>
-          <h1> 환영합니다! </h1>
-          <p> 로그인 하러 가기 </p>
-          <LoginLink href="/Login"> Sign Up </LoginLink>
-        </SignIncontainer>
+        <Container>
+          <SignIncontainer>
+            <h1> 환영합니다! </h1>
+            <p> 로그인 하러 가기 </p>
+            <LoginLink href="/Login"> Sign Up </LoginLink>
+          </SignIncontainer>
 
-        <FormContainer>
-          <form action="/join" onSubmit={handleSubmit}>
-            <h1>Sign Up</h1>
-            <Label>
-              <Input
-                type="email"
-                placeholder="email"
-                onChange={handleEmailChange}
-                required
-              />
-            </Label>
+          <FormContainer>
+            <form action="/join" onSubmit={handleSubmit}>
+              <h1>Sign Up</h1>
+              <Label>
+                <Input
+                  type="email"
+                  placeholder="email"
+                  onChange={handleEmailChange}
+                  required
+                />
+              </Label>
 
-            <Label>
-              <Input
-                type="password"
-                placeholder="password"
-                onChange={handlePasswordChange}
-                required
-              />
-            </Label>
+              <Label>
+                <Input
+                  type="password"
+                  placeholder="password"
+                  onChange={handlePasswordChange}
+                  required
+                />
+              </Label>
 
-            <Label>
-              <Input
-                type="password"
-                placeholder="confirmPassword"
-                onChange={handleConfirmPasswordChange}
-                required
-              />
-            </Label>
+              <Label>
+                <Input
+                  type="password"
+                  placeholder="confirmPassword"
+                  onChange={handleConfirmPasswordChange}
+                  required
+                />
+              </Label>
 
-            <Label>
-              <Input
-                type="username"
-                placeholder="username"
-                onChange={handleUsernameChange}
-                required
-              />
-            </Label>
+              <Label>
+                <Input
+                  type="username"
+                  placeholder="username"
+                  onChange={handleUsernameChange}
+                  required
+                />
+              </Label>
 
-            <Label>
-              <Input
-                type="username"
-                placeholder="nickname"
-                onChange={handleNicknameChange}
-                required
-              />
-            </Label>
+              <Label>
+                <Input
+                  type="username"
+                  placeholder="nickname"
+                  onChange={handleNicknameChange}
+                  required
+                />
+              </Label>
 
-            <SubmitButton>Sign Up</SubmitButton>
-          </form>
-        </FormContainer>
-      </Container>
-    </JoinWrapper>
+              <SubmitButton>Sign Up</SubmitButton>
+            </form>
+          </FormContainer>
+        </Container>
+      </JoinWrapper>
+    </div>
   );
 };
 
