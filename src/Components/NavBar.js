@@ -61,10 +61,10 @@ export default function NavBar() {
         {/* <MenuItem href="/">문의</MenuItem> */}
       </MenuContainer>
       <ButtonContainer>
-        <Link to="login">
+        <Link to="/login">
           <SignUpButton>Sign Up</SignUpButton>
         </Link>
-        <Link to="join">
+        <Link to="/join">
           <SignInButton>Sign In</SignInButton>
         </Link>
       </ButtonContainer>

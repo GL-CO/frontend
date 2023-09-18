@@ -52,7 +52,6 @@ const Join = () => {
   const onClickSignUp = (userData) => {
     const URL =
       "http://ec2-43-201-96-213.ap-northeast-2.compute.amazonaws.com:8080/v1/user/signup";
-
     fetch(URL, {
       method: "POST",
       headers: {
@@ -76,12 +75,19 @@ const Join = () => {
       });
   };
   console.log("userData : ", userData);
-
   return (
     <div>
       <NavBar></NavBar>
       <JoinWrapper>
-        {isSuccess && <Success>hihi</Success>}
+        {isSuccess && (
+          <Success>
+            <p>회원가입이 완료되었습니다.</p>
+            <br />
+            <Link to="/login">
+              <button>로그인</button>
+            </Link>
+          </Success>
+        )}
         <button onClick={toggleBoxButton}>박스 치우기</button>
 
         <Container>
@@ -151,12 +157,12 @@ const Join = () => {
 export default Join;
 const Success = styled.div`
   position: absolute; /* 절대 위치로 설정 */
-  top: 50%; 화면 상단에 위치
+  top: 30%; 화면 상단에 위치
   left: 50%; 화면 왼쪽에 위치
   transform: translate(50%, 50%);
   background-color: white; /* 배경색 설정 */
   z-index: 2; /* 화면 맨 앞에 오도록 높은 z-index 값 설정 */
-  padding: 200px;
+  padding: 100px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 (선택 사항) */
 `;
 const JoinWrapper = styled.div`
