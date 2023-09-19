@@ -39,7 +39,7 @@ const Join = () => {
         <SignIncontainer>
           <h1> 환영합니다! </h1>
           <p> 로그인 하러 가기 </p>
-          <LoginLink href="/Login"> Sign Up </LoginLink>
+          <LoginLink href="/Login"> Sign In </LoginLink>
         </SignIncontainer>
 
         <FormContainer>
