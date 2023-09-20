@@ -38,7 +38,7 @@ const Block = styled.div`
   z-index: 2; /* 다른 컨텐츠 위에 표시하기 위한 z-index 설정 */
 `;
 const Blur = styled``;
-export default function Challenge() {
+export default function Stories() {
   const data = [1, 2, 3, 4, 5, 6, 7, 8];
   let [isShow, setIsShow] = useState(false);
   const [isCovered, setIsCovered] = useState(true);
