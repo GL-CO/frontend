@@ -4,7 +4,7 @@ import Write from "./pages/Write";
 import Home from "./pages/Home";
 import Stories from "./pages/Stories";
 import Join from "./pages/LoginPage/Join";
-import Tmp from "./pages/tmp";
+import Tmp from "./pages/Tmp";
 function App() {
   return (
     <BrowserRouter>
