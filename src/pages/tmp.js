@@ -1,59 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-const Box = styled.div`
-  display: flex;
+const ChatContainer = styled.div`
+  width: 300px;
+  height: 400px;
   border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px;
-  align-items: center;
-`;
-
-const ProfileImage = styled.img`
-  width: 50px; /* 프로필 사진 너비 조정 */
-  height: 50px; /* 프로필 사진 높이 조정 */
-  margin-right: 10px; /* 프로필 사진과 텍스트 사이 여백 */
-`;
-
-const Content = styled.div``;
-
-const Container = styled.div`
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
-const Row = styled.div`
+const ChatMessages = styled.div`
+  flex: 1;
+  padding: 10px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
 `;
 
-const Button = styled.button`
-  background-color: #007bff;
-  color: #fff;
+const Message = styled.div`
+  max-width: 70%;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  align-self: ${(props) => (props.sentByMe ? "flex-end" : "flex-start")};
+  background-color: ${(props) => (props.sentByMe ? "#00c73c" : "#eee")};
+  color: ${(props) => (props.sentByMe ? "#fff" : "#333")};
+`;
+
+const MessageInput = styled.input`
+  padding: 10px;
   border: none;
-  padding: 10px 20px;
-  margin-top: 10px;
-  cursor: pointer;
+  border-top: 1px solid #ccc;
+  outline: none;
 `;
 
-const Tmp = () => {
+const ChatRoom = () => {
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+
+  const handleSendMessage = () => {
+    if (newMessage.trim() !== "") {
+      setMessages([...messages, { text: newMessage, sentByMe: true }]);
+      setNewMessage("");
+    }
+  };
+
   return (
-    <Container>
-      <Row>
-        <Box>
-          <ProfileImage src="URL" alt="loading" />
-          <Content>111111111111111111111111111</Content>
-        </Box>
-        <Box>
-          <ProfileImage src="URL" alt="loading" />
-          <Content>222222222222222222222222222</Content>
-        </Box>
-      </Row>
-      <Button>더 보기</Button>
-    </Container>
+    <ChatContainer>
+      <ChatMessages>
+        {messages.map((message, index) => (
+          <Message key={index} sentByMe={message.sentByMe}>
+            {message.text}
+          </Message>
+        ))}
+      </ChatMessages>
+      <div>
+        <MessageInput
+          type="text"
+          placeholder="메시지 입력..."
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              handleSendMessage();
+            }
+          }}
+        />
+        <button onClick={handleSendMessage}>전송</button>
+      </div>
+    </ChatContainer>
   );
 };
 
-export default Tmp;
+export default ChatRoom;
