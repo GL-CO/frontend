@@ -20,7 +20,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm run build
+        run: unset CI && npm run build
 
       - name: Show AWS CLI VERSION
         env:
