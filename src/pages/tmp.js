@@ -1,101 +1,76 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-// styled-components를 사용하여 컴포넌트 스타일링
-const FormContainer = styled.div`
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+const ChatContainer = styled.div`
   width: 300px;
+  height: 400px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 `;
 
-const Title = styled.h2`
-  text-align: center;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 15px;
-`;
-
-const Label = styled.label`
-  display: block;
-  font-weight: bold;
-`;
-
-const Input = styled.input`
-  width: 100%;
+const ChatMessages = styled.div`
+  flex: 1;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
 `;
 
-const Textarea = styled.textarea`
-  width: 100%;
+const Message = styled.div`
+  max-width: 70%;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  resize: vertical;
+  margin: 5px;
+  border-radius: 8px;
+  align-self: ${(props) => (props.sentByMe ? "flex-end" : "flex-start")};
+  background-color: ${(props) => (props.sentByMe ? "#00c73c" : "#eee")};
+  color: ${(props) => (props.sentByMe ? "#fff" : "#333")};
 `;
 
-const Button = styled.button`
-  background-color: #007bff;
-  color: #fff;
+const MessageInput = styled.input`
+  padding: 10px;
   border: none;
-  padding: 10px 20px;
-  border-radius: 3px;
-  cursor: pointer;
+  border-top: 1px solid #ccc;
+  outline: none;
 `;
 
-const StyledForm = () => {
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
+const ChatRoom = () => {
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log("입력된 데이터:", formData);
-  // };
+  const handleSendMessage = () => {
+    if (newMessage.trim() !== "") {
+      setMessages([...messages, { text: newMessage, sentByMe: true }]);
+      setNewMessage("");
+    }
+  };
+
   return (
-    <FormContainer>
-      <Title>문의하기</Title>
-      <form>
-        <FormGroup>
-          <Label htmlFor="name">이름:</Label>
-          <Input type="text" id="name" name="name" required />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="email">이메일:</Label>
-          <Input type="email" id="email" name="email" required />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="message">메시지:</Label>
-          <Textarea id="message" name="message" required />
-        </FormGroup>
-        <Button type="submit">전송</Button>
-      </form>
+    <ChatContainer>
+      <ChatMessages>
+        {messages.map((message, index) => (
+          <Message key={index} sentByMe={message.sentByMe}>
+            {message.text}
+          </Message>
+        ))}
+      </ChatMessages>
       <div>
-        <FormContainer>
-          <form action="/join">
-            <h1>Sign Up</h1>
-            <Label>
-              <Input type="email" placeholder="email" required />
-            </Label>
-          </form>
-        </FormContainer>
+        <MessageInput
+          type="text"
+          placeholder="메시지 입력..."
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              handleSendMessage();
+            }
+          }}
+        />
+        <button onClick={handleSendMessage}>전송</button>
       </div>
-    </FormContainer>
+    </ChatContainer>
   );
 };
 
-export default StyledForm;
+export default ChatRoom;

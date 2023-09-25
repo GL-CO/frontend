@@ -56,7 +56,7 @@ export default function NavBar() {
       <Logo>GL-CO</Logo>
       <MenuContainer>
         <MenuItem href="/">홈</MenuItem>
-        <MenuItem href="/">게시판</MenuItem>
+        <MenuItem href="/stories">글 목록</MenuItem>
         <MenuItem href="/write">글쓰기</MenuItem>
         {/* <MenuItem href="/">문의</MenuItem> */}
       </MenuContainer>
