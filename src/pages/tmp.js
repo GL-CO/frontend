@@ -35,7 +35,7 @@ const MessageInput = styled.input`
   outline: none;
 `;
 
-const ChatRoom = () => {
+const Tmp = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -73,4 +73,4 @@ const ChatRoom = () => {
   );
 };
 
-export default ChatRoom;
+export default Tmp;
