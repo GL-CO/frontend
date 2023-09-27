@@ -5,8 +5,7 @@ import Home from "./pages/Home";
 import MyPage from "./pages/Mypage";
 import Stories from "./pages/Stories";
 import Join from "./pages/LoginPage/Join";
-import Tmp from "./pages/Tmp";
-
+// import Tmp from "./pages/Tmp";
 function App() {
   return (
     <BrowserRouter>
@@ -18,7 +17,7 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/stories" element={<Stories />}></Route>
         <Route path="/join" element={<Join />}></Route>
-        <Route path="/tmp" element={<Tmp />}></Route>
+        {/* <Route path="/tmp" element={<Tmp />}></Route> */}
       </Routes>
     </BrowserRouter>
   );
