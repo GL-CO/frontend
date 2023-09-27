@@ -1,4 +1,5 @@
 // import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 const Container = styled.div`
   display: flex;
@@ -54,14 +55,18 @@ export default function NavBar() {
     <Container>
       <Logo>GL-CO</Logo>
       <MenuContainer>
-        <MenuItem href="/home">홈</MenuItem>
-        <MenuItem href="/home">소개</MenuItem>
-        <MenuItem href="/home">서비스</MenuItem>
-        <MenuItem href="/home">문의</MenuItem>
+        <MenuItem href="/">홈</MenuItem>
+        <MenuItem href="/stories">글 목록</MenuItem>
+        <MenuItem href="/write">글쓰기</MenuItem>
+        {/* <MenuItem href="/">문의</MenuItem> */}
       </MenuContainer>
       <ButtonContainer>
-        <SignUpButton>Sign Up</SignUpButton>
-        <SignInButton>Sign In</SignInButton>
+        <Link to="/login">
+          <SignUpButton>Sign Up</SignUpButton>
+        </Link>
+        <Link to="/join">
+          <SignInButton>Sign In</SignInButton>
+        </Link>
       </ButtonContainer>
     </Container>
   );

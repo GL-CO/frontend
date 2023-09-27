@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
-
+import NavBar from "../../Components/NavBar";
 const Join = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [username, setUsername] = useState("");
   const [nickname, setNickname] = useState("");
-
+  const [userData, setUserData] = useState([]);
+  const [isSuccess, setIsSuccess] = useState(false);
   const handleEmailChange = (event) => {
     setEmail(event.currentTarget.value);
   };
@@ -32,69 +33,138 @@ const Join = () => {
     }
     return true;
   };
-
+  const toggleBoxButton = () => {
+    setIsSuccess(!isSuccess);
+  };
+  const handleSubmit = (e) => {
+    // if(!) 로그인박스 화면떠서 로그인유도
+    e.preventDefault();
+    const userData = {
+      email: email,
+      password: password,
+      name: username,
+      nickname: nickname,
+      usingLanguage: "한국어",
+      learningLanguage: "English",
+    };
+    onClickSignUp(userData);
+  };
+  const onClickSignUp = (userData) => {
+    const URL =
+      "http://ec2-43-201-96-213.ap-northeast-2.compute.amazonaws.com:8080/v1/user/signup";
+    fetch(URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Response Error : ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setUserData(data);
+        setIsSuccess(!isSuccess);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  console.log("userData : ", userData);
   return (
-    <JoinWrapper>
-      <Container>
-        <SignIncontainer>
-          <h1> 환영합니다! </h1>
-          <p> 로그인 하러 가기 </p>
-          <LoginLink href="/Login"> Sign In </LoginLink>
-        </SignIncontainer>
+    <div>
+      <NavBar></NavBar>
+      <JoinWrapper>
+        {isSuccess && (
+          <Success>
+            <p>회원가입이 완료되었습니다.</p>
+            <br />
+            <Link to="/login">
+              <button>로그인</button>
+            </Link>
+          </Success>
+        )}
+        <button onClick={toggleBoxButton}>박스 치우기</button>
 
-        <FormContainer>
-          <form action="/join">
-            <h1>Sign Up</h1>
-            <Label>
-              <Input
-                type="email"
-                placeholder="email"
-                onChange={handleEmailChange}
-              />
-            </Label>
+        <Container>
+          <SignIncontainer>
+            <h1> 환영합니다! </h1>
+            <p> 로그인 하러 가기 </p>
+            <LoginLink href="/Login"> Sign Up </LoginLink>
+          </SignIncontainer>
 
-            <Label>
-              <Input
-                type="password"
-                placeholder="password"
-                onChange={handlePasswordChange}
-              />
-            </Label>
+          <FormContainer>
+            <form action="/join" onSubmit={handleSubmit}>
+              <h1>Sign Up</h1>
+              <Label>
+                <Input
+                  type="email"
+                  placeholder="email"
+                  onChange={handleEmailChange}
+                  required
+                />
+              </Label>
 
-            <Label>
-              <Input
-                type="password"
-                placeholder="confirmPassword"
-                onChange={handleConfirmPasswordChange}
-              />
-            </Label>
+              <Label>
+                <Input
+                  type="password"
+                  placeholder="password"
+                  onChange={handlePasswordChange}
+                  required
+                />
+              </Label>
 
-            <Label>
-              <Input
-                type="username"
-                placeholder="username"
-                onChange={handleUsernameChange}
-              />
-            </Label>
+              <Label>
+                <Input
+                  type="password"
+                  placeholder="confirmPassword"
+                  onChange={handleConfirmPasswordChange}
+                  required
+                />
+              </Label>
 
-            <Label>
-              <Input
-                type="username"
-                placeholder="nickname"
-                onChange={handleNicknameChange}
-              />
-            </Label>
+              <Label>
+                <Input
+                  type="username"
+                  placeholder="username"
+                  onChange={handleUsernameChange}
+                  required
+                />
+              </Label>
 
-            <SubmitButton onClick="">Sign Up</SubmitButton>
-          </form>
-        </FormContainer>
-      </Container>
-    </JoinWrapper>
+              <Label>
+                <Input
+                  type="username"
+                  placeholder="nickname"
+                  onChange={handleNicknameChange}
+                  required
+                />
+              </Label>
+
+              <SubmitButton>Sign Up</SubmitButton>
+            </form>
+          </FormContainer>
+        </Container>
+      </JoinWrapper>
+    </div>
   );
 };
 
 export default Join;
-
+const Success = styled.div`
+  position: absolute; /* 절대 위치로 설정 */
+  top: 30%; 화면 상단에 위치
+  left: 50%; 화면 왼쪽에 위치
+  transform: translate(50%, 50%);
+  background-color: white; /* 배경색 설정 */
+  z-index: 2; /* 화면 맨 앞에 오도록 높은 z-index 값 설정 */
+  padding: 100px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 (선택 사항) */
+`;
 const JoinWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -206,3 +276,39 @@ const LoginLink = styled.a`
     color: #ff416c;
   }
 `;
+//이메일 인증Form
+// const FormContainer = styled.div`
+//   background-color: #ffffff;
+//   padding: 20px;
+//   border-radius: 5px;
+//   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+//   width: 300px;
+//   margin: 0 auto;
+// `;
+
+// const Label = styled.label`
+//   display: block;
+//   font-weight: bold;
+// `;
+
+// const Input = styled.input`
+//   width: 100%;
+//   padding: 10px;
+//   border: 1px solid #ccc;
+//   border-radius: 3px;
+// `;
+
+// const emailCertificationForm = () => {
+//   return (
+//     <FormContainer>
+//       <form action="/join">
+//         <h1>Sign Up</h1>
+//         <Label>
+//           <Input type="email" placeholder="email" required />
+//         </Label>
+//       </form>
+//     </FormContainer>
+//   );
+// };
+
+// export default emailCertificationForm;
