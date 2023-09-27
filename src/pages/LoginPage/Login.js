@@ -3,22 +3,21 @@ import React, { useState}from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showEmailError, setShowEmailError] = useState(false);
-  const [showPasswordError, setShowPasswordError] = useState(false);
-
+  const [showEmailError, setShowEmailError] = useState(false); 
+  const [showPasswordError, setShowPasswordError] = useState(false); 
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
 
     if(!email) {
       setShowEmailError(true);
       return;
     }
-
+    
     if(!password) {
       setShowPasswordError(true);
       return;
