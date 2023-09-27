@@ -1,9 +1,47 @@
-import React from 'react';
+
+import React, { useState}from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showEmailError, setShowEmailError] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
 
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+
+    if(!email) {
+      setShowEmailError(true);
+      return;
+    }
+
+    if(!password) {
+      setShowPasswordError(true);
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://ec2-43-201-96-213.ap-northeast-2.compute.amazonaws.com:8080/v1/user/login', {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        console.log('로그인 성공', response.data);
+       
+      } else {
+        console.error('로그인 실패', response.data);
+       
+      }
+    } catch (error) {
+      console.error('로그인 실패', error);
+    }
+  };
+  
   return (
     <LoginWrapper>
       <Container>
@@ -15,18 +53,34 @@ const Login = () => {
         </SignUpcontainer>
 
         <FormContainer>
-          <form action="#">
+          <form onSubmit={handleLogin}>
             <h1>Sign In</h1>
             <Label> 
-              <Input type="email" placeholder="Email" />
+              <Input type="email" 
+              placeholder="Email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setShowEmailError(false);
+              }} 
+              />
             </Label>
+        
             
             <Label>
-              <Input type="password" placeholder="Password" />
+              <Input type="password" 
+              placeholder="Password" 
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setShowPasswordError(false);
+              }}
+              />
             </Label>
            
+           
             <a href="#">Forgot your password?</a>
-            <SubmitButton>Sign in</SubmitButton>
+            <SubmitButton type="submit">Sign in</SubmitButton>
           </form>
         </FormContainer>
 
@@ -149,4 +203,4 @@ font-size: 16px;
   background: #fff;
   color: #ff416c;
 }
-`
+`;
