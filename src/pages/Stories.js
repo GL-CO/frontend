@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import React from "react";
 import NavBar from "../Components/NavBar";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-
 const OptionContainer = styled.div`
   display: flex;
   align-items: center;
