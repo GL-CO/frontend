@@ -8,7 +8,7 @@ import Stories from "./pages/Stories";
 import Join from "./pages/LoginPage/Join";
 import Mywrite from "./pages/Mywrite";
 
-// import Tmp from "./pages/Tmp";
+import Edit from "./pages/Edit";
 function App() {
   return (
     <BrowserRouter>
@@ -21,7 +21,7 @@ function App() {
         <Route path="/stories" element={<Stories />}></Route>
         <Route path="/join" element={<Join />}></Route>
         <Route path="/mywrite" element={<Mywrite />}></Route>
-        {/* <Route path="/tmp" element={<Tmp />}></Route> */}
+        <Route path="/edit" element={<Edit />}></Route>
       </Routes>
     </BrowserRouter>
   );

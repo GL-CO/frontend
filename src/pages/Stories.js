@@ -1,15 +1,19 @@
-import NavBar from "../Components/NavBar";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import React from "react";
-
+import NavBar from "../Components/NavBar";
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 const OptionContainer = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
   padding: 16px;
-  //위에 여백 추가로두기
-  /* background-color: #f0f0f0; */
 `;
+
 const Tag = styled.div`
   align-items: center;
   width: 10%;
@@ -18,7 +22,6 @@ const Tag = styled.div`
   padding: 12px;
   border-radius: 20px;
   margin-right: auto;
-  margin-left: 100px;
 `;
 
 const Search = styled.input`
@@ -38,12 +41,14 @@ const Search = styled.input`
     }
   }
 `;
+
 const SearchIcon = styled.svg`
   margin-right: auto;
   &:hover {
     cursor: pointer;
   }
 `;
+
 const Box = styled.div`
   display: flex;
   border: 1px solid #ccc;
@@ -60,51 +65,52 @@ const ProfileImage = styled.img`
 
 const Content = styled.div``;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const Row = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2열로 설정 */
+  gap: 10px; /* 열 사이의 간격 조절 */
   justify-content: center;
 `;
 
-const Button = styled.button`
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
+const PageNumbers = styled.div`
+  display: flex;
+  justify-content: center;
   margin-top: 10px;
+`;
+
+const PageNumber = styled.button`
+  background-color: ${(props) => (props.active ? "#007bff" : "transparent")};
+  color: ${(props) => (props.active ? "#fff" : "#007bff")};
+  border: 1px solid #007bff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
   cursor: pointer;
 `;
 
 export default function Stories() {
-  const storiesData = [
-    {
-      id: 1,
-      profileUrl: "URL_프로필_이미지_주소_1",
-      content: "111111111111111111111111111",
-    },
-    {
-      id: 2,
-      profileUrl: "URL_프로필_이미지_주소_2",
-      content: "222222222222222222222222222",
-    },
-    {
-      id: 3,
-      profileUrl: "URL_프로필_이미지_주소_2",
-      content: "222222222222222222222222222",
-    },
-    {
-      id: 4,
-      profileUrl: "URL_프로필_이미지_주소_2",
-      content: "222222222222222222222222222",
-    },
-    // 여기에 더 많은 데이터를 추가할 수 있습니다.
-  ];
+  const storiesData = [];
+  for (let i = 1; i <= 39; i++) {
+    storiesData.push({
+      id: i,
+      profileUrl: `URL_프로필_이미지_주소_${i}`,
+      content: `${i}`,
+    });
+  }
+  const itemsPerPage = 10; // 한 페이지에 표시할 아이템 수
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const [visibleItems, setVisibleItems] = useState([]);
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const itemsToShow = storiesData.slice(startIndex, endIndex);
+    setVisibleItems(itemsToShow);
+  }, [currentPage, storiesData]);
+
+  const totalPages = Math.ceil(storiesData.length / itemsPerPage);
+
   return (
     <div>
       <NavBar></NavBar>
@@ -124,14 +130,24 @@ export default function Stories() {
       </OptionContainer>
       <Container>
         <Row>
-          {storiesData.map((story) => (
+          {visibleItems.map((story) => (
             <Box key={story.id}>
               <ProfileImage src={story.profileUrl} alt="loading" />
               <Content>{story.content}</Content>
             </Box>
           ))}
         </Row>
-        <Button>더 보기</Button>
+        <PageNumbers>
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <PageNumber
+              key={index}
+              active={index + 1 === currentPage}
+              onClick={() => setCurrentPage(index + 1)}
+            >
+              {index + 1}
+            </PageNumber>
+          ))}
+        </PageNumbers>
       </Container>
     </div>
   );
