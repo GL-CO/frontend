@@ -2,6 +2,7 @@
 import React, { useState}from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate} from 'react-router-dom';
 
 
 const Login = () => {
@@ -9,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [showEmailError, setShowEmailError] = useState(false); 
   const [showPasswordError, setShowPasswordError] = useState(false); 
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,11 +18,15 @@ const Login = () => {
     if(!email) {
       setShowEmailError(true);
       return;
+    } else {
+      setShowEmailError(false);
     }
     
     if(!password) {
       setShowPasswordError(true);
       return;
+    } else {
+      setShowPasswordError(false);
     }
 
     try {
@@ -31,6 +37,7 @@ const Login = () => {
 
       if (response.status === 200) {
         console.log('로그인 성공', response.data);
+        navigate('/');
        
       } else {
         console.error('로그인 실패', response.data);
@@ -64,6 +71,8 @@ const Login = () => {
               }} 
               />
             </Label>
+
+            {showEmailError && <ErrorText>Email을 입력해주세요.</ErrorText>}
         
             
             <Label>
@@ -77,7 +86,7 @@ const Login = () => {
               />
             </Label>
            
-           
+            {showPasswordError && <ErrorText>Password를 입력해주세요.</ErrorText>}
             <a href="#">Forgot your password?</a>
             <SubmitButton type="submit">Sign in</SubmitButton>
           </form>
@@ -202,4 +211,11 @@ font-size: 16px;
   background: #fff;
   color: #ff416c;
 }
+`;
+
+const ErrorText = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align : center;
 `;
