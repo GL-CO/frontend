@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import NavBar from "../Components/NavBar";
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 const Mywrite = () => {
   const initialDisplayCount = 5; // 초기에 표시할 항목 수
@@ -39,7 +40,9 @@ const Mywrite = () => {
             {(Testdata.slice(0, displayCount)).map((blog) => (
               <tr key={blog.id}>
                 <MywriteTableCell>{blog.id}</MywriteTableCell>
-                <MywriteTableCell>{blog.title}</MywriteTableCell>
+                <MywriteTableCell>
+                <Link to={"/write"}>{blog.title}</Link>
+                </MywriteTableCell>
                 <MywriteTableCell>{blog.author}</MywriteTableCell>
                 <MywriteTableCell>{blog.date}</MywriteTableCell>
               </tr>

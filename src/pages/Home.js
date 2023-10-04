@@ -1,5 +1,7 @@
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
+import React from "react";
+
 const BgImage = styled.div`
   justify-content: center;
   display: flex;

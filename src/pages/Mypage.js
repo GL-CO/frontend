@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import NavBar from "../Components/NavBar";
 import styled from 'styled-components';
 
+
 function MyPage() {
   const [userData, setUserData] = useState({
     username: '사용자 이름',

@@ -1,4 +1,5 @@
 import { Route, BrowserRouter, Routes } from "react-router-dom";
+import React from "react";
 import Login from "./pages/LoginPage/Login";
 import Write from "./pages/Write";
 import Home from "./pages/Home";
@@ -6,6 +7,7 @@ import MyPage from "./pages/Mypage";
 import Stories from "./pages/Stories";
 import Join from "./pages/LoginPage/Join";
 import Mywrite from "./pages/Mywrite";
+
 // import Tmp from "./pages/Tmp";
 function App() {
   return (

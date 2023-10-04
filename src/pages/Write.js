@@ -1,5 +1,6 @@
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
+import React from "react";
 
 const FormContainer = styled.div`
   background-color: #ffffff;
