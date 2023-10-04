@@ -104,15 +104,15 @@ const LoginWrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #fff; 
-  color: #000; 
+  background: #fff;
+  color: #000;
   overflow: hidden;
 `;
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  width: 100%; 
+  width: 100%;
 `;
 
 const SignUpcontainer = styled.div`
@@ -120,29 +120,26 @@ const SignUpcontainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 40px;
-  background: #8F4646;
+  background: #8f4646;
   width: 50%;
   text-align: center;
- 
 
   h1 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #fff;
   }
-  
-  p{
+
+  p {
     color: #fff;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
   }
 `;
 
-
 const FormContainer = styled.div`
-  background: #FFF0F0;
+  background: #fff0f0;
   padding: 20px;
   width: 50%;
-
 
   h1 {
     font-size: 24px;
@@ -150,8 +147,8 @@ const FormContainer = styled.div`
     text-align: center;
   }
 
-  a{ 
-    text-align: center; 
+  a {
+    text-align: center;
   }
 
   form {
@@ -171,20 +168,20 @@ const FormContainer = styled.div`
   }
 `;
 const Label = styled.label`
-  display: block; 
-  text-align: center; 
-`
-const Input  = styled.input`
+  display: block;
+  text-align: center;
+`;
+const Input = styled.input`
   border: none;
   border-bottom: 2px solid #800000; /* 밑줄 추가 */
   padding: 10px;
   font-size: 16px;
   background: transparent; /* 입력란 배경을 투명하게 설정 */
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 `;
 
 const SubmitButton = styled.button`
-  background: #800000; 
+  background: #800000;
   color: #fff;
   padding: 10px;
   border: none;
@@ -194,7 +191,7 @@ const SubmitButton = styled.button`
   transition: background 0.3s;
 
   &:hover {
-    background: #945050; 
+    background: #945050;
   }
 `;
 
