@@ -7,6 +7,8 @@ import MyPage from "./pages/Mypage";
 import Stories from "./pages/Stories";
 import Join from "./pages/LoginPage/Join";
 import Mywrite from "./pages/Mywrite";
+import MywritePage from "./pages/MywritePage";
+
 
 import Edit from "./pages/Edit";
 function App() {
@@ -21,6 +23,7 @@ function App() {
         <Route path="/stories" element={<Stories />}></Route>
         <Route path="/join" element={<Join />}></Route>
         <Route path="/mywrite" element={<Mywrite />}></Route>
+        <Route path="/mywritepage" element={<MywritePage />}></Route>
         <Route path="/edit" element={<Edit />}></Route>
       </Routes>
     </BrowserRouter>

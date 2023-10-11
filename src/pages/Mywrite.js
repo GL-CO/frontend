@@ -41,7 +41,7 @@ const Mywrite = () => {
               <tr key={blog.id}>
                 <MywriteTableCell>{blog.id}</MywriteTableCell>
                 <MywriteTableCell>
-                <Link to={"/write"}>{blog.title}</Link>
+                <Link to={"/MywritePage"}>{blog.title}</Link>
                 </MywriteTableCell>
                 <MywriteTableCell>{blog.author}</MywriteTableCell>
                 <MywriteTableCell>{blog.date}</MywriteTableCell>
