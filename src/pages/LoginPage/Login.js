@@ -30,7 +30,7 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post('http://ec2-43-201-96-213.ap-northeast-2.compute.amazonaws.com:8080/v1/user/login', {
+      const response = await axios.post('http://ec2-13-209-43-38.ap-northeast-2.compute.amazonaws.com:8080/v1/user/login', {
         email,
         password,
       });
