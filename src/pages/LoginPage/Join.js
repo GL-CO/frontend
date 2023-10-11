@@ -51,7 +51,7 @@ const Join = () => {
   };
   const onClickSignUp = (userData) => {
     const URL =
-      "htt://ec2-13-209-43-38.ap-northeast-2.compute.amazonaws.com:8080/v1/user/signup";
+      "http://ec2-13-209-43-38.ap-northeast-2.compute.amazonaws.com:8080/v1/user/signup";
     fetch(URL, {
       method: "POST",
       headers: {
