@@ -87,27 +87,59 @@ const PageNumber = styled.button`
   margin: 0 5px;
   cursor: pointer;
 `;
+const Writing = styled.div``;
 //모든 글 보기
 export default function Writings() {
-  const storiesData = [];
-  for (let i = 1; i <= 39; i++) {
-    storiesData.push({
-      id: i,
-      profileUrl: `URL_프로필_이미지_주소_${i}`,
-      content: `${i}`,
-    });
-  }
+  const [storiesData, setStoriesData] = useState([]);
   const itemsPerPage = 10; // 한 페이지에 표시할 아이템 수
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [visibleItems, setVisibleItems] = useState([]);
 
+  //API 코드
+  const [isSuccess, setIsSuccess] = useState(false);
+  function getTokenFromSessionStorage() {
+    return sessionStorage.getItem("authToken");
+  }
+
+  const fetchWritings = () => {
+    const pageSize = 5;
+    const pageNumber = 0;
+    const URL =
+      "http://ec2-13-209-43-38.ap-northeast-2.compute.amazonaws.com:8080/v1/writing";
+    const query = `http://localhost:3000/writings?pageSize=${pageSize}&pageNumber=${pageNumber}`;
+    const authToken = getTokenFromSessionStorage();
+    console.log(authToken);
+    fetch(URL, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Response Error : ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setStoriesData(data);
+        setIsSuccess(!isSuccess);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   useEffect(() => {
+    fetchWritings();
+  }, []);
+  useEffect(() => {
+    // 페이지 숫자 PageNumber
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const itemsToShow = storiesData.slice(startIndex, endIndex);
     setVisibleItems(itemsToShow);
   }, [currentPage, storiesData]);
-
   const totalPages = Math.ceil(storiesData.length / itemsPerPage);
 
   return (
@@ -128,6 +160,14 @@ export default function Writings() {
         </SearchIcon>
       </OptionContainer>
       <Container>
+        <Row>
+          {visibleItems.map((story) => (
+            <Box key={story.id}>
+              <ProfileImage src={story.profileUrl} alt="loading" />
+              <Content>{story.content}</Content>
+            </Box>
+          ))}
+        </Row>
         <Row>
           {visibleItems.map((story) => (
             <Box key={story.id}>
