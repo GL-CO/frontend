@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import NavBar from "../Components/NavBar";
-import styled from 'styled-components';
+import styled from "styled-components";
 import { Link } from "react-router-dom";
-
-const Mywrite = () => {
+//내글 보기
+const Mystory = () => {
   const initialDisplayCount = 5; // 초기에 표시할 항목 수
   const [displayCount, setDisplayCount] = useState(initialDisplayCount);
 
   const Testdata = [
-    { id: 1, title: '첫 번째 글', author: '글쓴이 1', date: '2023-10-04' },
-    { id: 2, title: '두 번째 글', author: '글쓴이 2', date: '2023-10-05' },
-    { id: 3, title: '세 번째 글', author: '글쓴이 3', date: '2023-10-06' },
-    { id: 4, title: '네 번째 글', author: '글쓴이 4', date: '2023-10-07' },
-    { id: 5, title: '다섯 번째 글', author: '글쓴이 5', date: '2023-10-08' },
-    { id: 6, title: '여섯 번째 글', author: '글쓴이 6', date: '2023-10-09' },
+    { id: 1, title: "첫 번째 글", author: "글쓴이 1", date: "2023-10-04" },
+    { id: 2, title: "두 번째 글", author: "글쓴이 2", date: "2023-10-05" },
+    { id: 3, title: "세 번째 글", author: "글쓴이 3", date: "2023-10-06" },
+    { id: 4, title: "네 번째 글", author: "글쓴이 4", date: "2023-10-07" },
+    { id: 5, title: "다섯 번째 글", author: "글쓴이 5", date: "2023-10-08" },
+    { id: 6, title: "여섯 번째 글", author: "글쓴이 6", date: "2023-10-09" },
     // 추가 테스트 데이터
   ];
 
@@ -37,11 +37,11 @@ const Mywrite = () => {
             </tr>
           </thead>
           <tbody>
-            {(Testdata.slice(0, displayCount)).map((blog) => (
+            {Testdata.slice(0, displayCount).map((blog) => (
               <tr key={blog.id}>
                 <MywriteTableCell>{blog.id}</MywriteTableCell>
                 <MywriteTableCell>
-                <Link to={"/write"}>{blog.title}</Link>
+                  <Link to={"/write"}>{blog.title}</Link>
                 </MywriteTableCell>
                 <MywriteTableCell>{blog.author}</MywriteTableCell>
                 <MywriteTableCell>{blog.date}</MywriteTableCell>
@@ -55,13 +55,13 @@ const Mywrite = () => {
       </MywriteContainer>
     </div>
   );
-}
+};
 
-export default Mywrite;
+export default Mystory;
 
 const MywriteContainer = styled.div`
   padding: 20px;
-  text-align: center; 
+  text-align: center;
 `;
 
 const MywriteTitle = styled.h1`
@@ -95,7 +95,7 @@ const LoadMoreButton = styled.button`
   margin-top: 20px;
   font-size: 16px;
   border-radius: 5px;
-  
+
   &:hover {
     background-color: #0056b3;
   }

@@ -4,9 +4,9 @@ import Login from "./pages/LoginPage/Login";
 import Write from "./pages/Write";
 import Home from "./pages/Home";
 import MyPage from "./pages/Mypage";
-import Stories from "./pages/Stories";
+import Writings from "./pages/Writings";
 import Join from "./pages/LoginPage/Join";
-import Mywrite from "./pages/Mywrite";
+import Writing from "./pages/Writing";
 
 import Edit from "./pages/Edit";
 function App() {
@@ -18,9 +18,9 @@ function App() {
         <Route path="/write" element={<Write />}></Route>
         <Route path="/mypage" element={<MyPage />}></Route>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/stories" element={<Stories />}></Route>
+        <Route path="/Writings" element={<Writings />}></Route>
         <Route path="/join" element={<Join />}></Route>
-        <Route path="/mywrite" element={<Mywrite />}></Route>
+        <Route path="/Writing" element={<Writing />}></Route>
         <Route path="/edit" element={<Edit />}></Route>
       </Routes>
     </BrowserRouter>

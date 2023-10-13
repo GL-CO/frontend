@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import React from "react";
 import NavBar from "../Components/NavBar";
 const Container = styled.div`
   display: flex;
@@ -88,8 +87,8 @@ const PageNumber = styled.button`
   margin: 0 5px;
   cursor: pointer;
 `;
-
-export default function Stories() {
+//모든 글 보기
+export default function Writings() {
   const storiesData = [];
   for (let i = 1; i <= 39; i++) {
     storiesData.push({

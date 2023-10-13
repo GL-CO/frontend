@@ -10,13 +10,13 @@ const FormContainer = styled.div`
   width: 40%;
   margin: 0 auto;
 `;
-const Tag = styled.div`
-  text-align: center;
-  width: 20%;
-  background-color: #bbb;
-  border-radius: 20px;
-  margin-bottom: 10px;
+
+const TagContainer = styled.select`
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 `;
+
 const FormGroup = styled.div`
   margin-bottom: 15px;
 `;
@@ -52,14 +52,37 @@ const Button = styled.button`
   display: flex;
   margin: 0 auto;
 `;
-
+const Tag = styled.select``;
+//글 쓰기
 export default function Write() {
+  const options = [
+    { value: "", label: "선택 없음" },
+    { value: "Korean", label: "한국어" },
+    { value: "English", label: "영어" },
+  ];
+  console.log("1");
   return (
     <div>
       <NavBar></NavBar>
       <FormContainer>
         <h2>글쓰기</h2>
-        <Tag>태그</Tag>
+        <TagContainer>
+          <Label htmlFor="selectBox"> 언어 선택 : </Label>
+          <Tag id="selectBox">
+            {options.map((option, i) => (
+              <option key={i} value={option.value}></option>
+            ))}
+          </Tag>
+        </TagContainer>
+        <div>
+          <select id="selectBox">
+            {options.map((option, index) => (
+              <option key={index} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
         <form>
           <FormGroup>
             <Label htmlFor="title">제목 :</Label>
