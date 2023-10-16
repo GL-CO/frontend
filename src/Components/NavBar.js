@@ -1,6 +1,7 @@
 // import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import React from "react";
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -56,7 +57,7 @@ export default function NavBar() {
       <Logo>GL-CO</Logo>
       <MenuContainer>
         <MenuItem href="/">홈</MenuItem>
-        <MenuItem href="/stories">글 목록</MenuItem>
+        <MenuItem href="/writings">글 목록</MenuItem>
         <MenuItem href="/write">글쓰기</MenuItem>
         {/* <MenuItem href="/">문의</MenuItem> */}
       </MenuContainer>

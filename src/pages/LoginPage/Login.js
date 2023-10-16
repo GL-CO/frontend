@@ -1,38 +1,103 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import NavBar from "../../Components/NavBar";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
+//로그인
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showEmailError, setShowEmailError] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
+  const navigate = useNavigate();
+  const saveTokenToSessionStorage = (token) => {
+    sessionStorage.setItem("authToken", token);
+  };
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    if (!email) {
+      setShowEmailError(true);
+      return;
+    } else {
+      setShowEmailError(false);
+    }
+
+    if (!password) {
+      setShowPasswordError(true);
+      return;
+    } else {
+      setShowPasswordError(false);
+    }
+
+    try {
+      const response = await axios.post(
+        "http://ec2-13-209-43-38.ap-northeast-2.compute.amazonaws.com:8080/v1/user/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("로그인 성공", response.data);
+        // navigate("/");
+        saveTokenToSessionStorage(response.data.accessToken);
+      } else {
+        console.error("로그인 실패", response.data);
+      }
+    } catch (error) {
+      console.error("로그인 실패", error);
+    }
+  };
+
   return (
-    <div>
-      <NavBar></NavBar>
-      <LoginWrapper>
-        <Container>
-          <SignUpcontainer>
-            <h1>반갑습니다!</h1>
-            <p> 회원가입 하러 가기 </p>
-            <JoinLink href="/Join"> Sign In </JoinLink>
-          </SignUpcontainer>
+    <LoginWrapper>
+      <Container>
+        <SignUpcontainer>
+          <h1>반갑습니다!</h1>
+          <p> 회원가입 하러 가기 </p>
+          <JoinLink href="/Join"> Sign Up </JoinLink>
+        </SignUpcontainer>
 
-          <FormContainer>
-            <form action="#">
-              <h1>Sign In</h1>
-              <Label>
-                <Input type="email" placeholder="Email" />
-              </Label>
+        <FormContainer>
+          <form onSubmit={handleLogin}>
+            <h1>Sign In</h1>
+            <Label>
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setShowEmailError(false);
+                }}
+              />
+            </Label>
 
-              <Label>
-                <Input type="password" placeholder="Password" />
-              </Label>
+            {showEmailError && <ErrorText>Email을 입력해주세요.</ErrorText>}
 
-              <a href="#">Forgot your password?</a>
-              <SubmitButton>Sign in</SubmitButton>
-            </form>
-          </FormContainer>
-        </Container>
-      </LoginWrapper>
-    </div>
+            <Label>
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setShowPasswordError(false);
+                }}
+              />
+            </Label>
+
+            {showPasswordError && (
+              <ErrorText>Password를 입력해주세요.</ErrorText>
+            )}
+            <a href="#">Forgot your password?</a>
+            <SubmitButton type="submit">Sign in</SubmitButton>
+          </form>
+        </FormContainer>
+      </Container>
+    </LoginWrapper>
   );
 };
 
@@ -147,4 +212,11 @@ const JoinLink = styled.a`
     background: #fff;
     color: #ff416c;
   }
+`;
+
+const ErrorText = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
 `;

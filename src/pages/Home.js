@@ -1,5 +1,7 @@
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
+import React from "react";
+
 const BgImage = styled.div`
   justify-content: center;
   display: flex;
@@ -103,6 +105,7 @@ const StoryText = styled.div`
   overflow-wrap: break-word;
 `;
 
+//메인페이지
 export default function Home() {
   return (
     <div>
