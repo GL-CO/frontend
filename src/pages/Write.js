@@ -59,20 +59,19 @@ export default function Write() {
     { value: "English", label: "영어" },
   ];
   const [title, setTitle] = useState("");
-  const [paragraph, setParagraph] = useState("");
+  const [content, setContent] = useState("");
+  const [languageTag, setLanguageTag] = useState("");
   const [writeData, setWriteData] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const handleTagsChange = (e) => {
-    // setTags(e.target);
     console.log(e.target.value);
   };
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
   const handleParagraphChange = (e) => {
-    setParagraph();
+    setContent(e.target.value);
   };
-
   function getTokenFromSessionStorage() {
     return sessionStorage.getItem("authToken");
   }
@@ -82,7 +81,7 @@ export default function Write() {
     const writeData = {
       tag: tags.value,
       title: title,
-      paragraph: paragraph,
+      content: content,
     };
     onClickWrite(writeData);
   };
@@ -96,6 +95,7 @@ export default function Write() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
       },
       body: JSON.stringify(writeData),
     })
@@ -114,6 +114,7 @@ export default function Write() {
         console.error(err);
       });
   };
+
   return (
     <div>
       <NavBar></NavBar>
@@ -139,9 +140,9 @@ export default function Write() {
             ></Input>
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="paragraph">내용 :</Label>
+            <Label htmlFor="content">내용 :</Label>
             <Textarea
-              id="paragraph"
+              id="content"
               type="text"
               placeholder="내용을 입력하세요"
             ></Textarea>
