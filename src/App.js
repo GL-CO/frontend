@@ -6,7 +6,13 @@ import Home from "./pages/Home";
 import MyPage from "./pages/Mypage";
 import Writings from "./pages/Writings";
 import Join from "./pages/LoginPage/Join";
+<<<<<<< HEAD
 import Writing from "./pages/Writing";
+=======
+import Mywrite from "./pages/Mywrite";
+import MywritePage from "./pages/MywritePage";
+
+>>>>>>> 0d146cf448aeb23b040171c6c1a6e575b3d5c9d4
 
 import Edit from "./pages/Edit";
 function App() {
