@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import NavBar from "../../Components/NavBar";
+//회원가입
 const Join = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,7 +52,7 @@ const Join = () => {
   };
   const onClickSignUp = (userData) => {
     const URL =
-      "http://ec2-43-201-96-213.ap-northeast-2.compute.amazonaws.com:8080/v1/user/signup";
+      "http://ec2-13-209-43-38.ap-northeast-2.compute.amazonaws.com:8080/v1/user/signup";
     fetch(URL, {
       method: "POST",
       headers: {

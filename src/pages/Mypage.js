@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import NavBar from "../Components/NavBar";
-import styled from 'styled-components';
+import styled from "styled-components";
 
-
+//마이페이지
 function MyPage() {
   const [userData, setUserData] = useState({
-    username: '사용자 이름',
-    nickname: '사용자 별명',
-    email: '사용자 이메일',
+    username: "사용자 이름",
+    nickname: "사용자 별명",
+    email: "사용자 이메일",
     points: 100,
-    fluentLanguage: '한국어',
-    learningLanguage: '영어',
+    fluentLanguage: "한국어",
+    learningLanguage: "영어",
     profileImage: null,
   });
   const [isEditing, setIsEditing] = useState(false);
-  const [newNickname, setNewNickname] = useState('');
+  const [newNickname, setNewNickname] = useState("");
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -49,7 +49,7 @@ function MyPage() {
               />
             )}
             <ProfileImage
-              src={userData.profileImage || '기본 이미지 URL'}
+              src={userData.profileImage || "기본 이미지 URL"}
               alt="프로필 이미지"
             />
           </ProfileImageContainer>
@@ -84,15 +84,21 @@ function MyPage() {
         <SeparatorLine />
         <CircleContainer>
           <Circle>
-            <p><strong> 포인트 </strong></p>
+            <p>
+              <strong> 포인트 </strong>
+            </p>
             <p>{userData.points}</p>
           </Circle>
           <Circle>
-            <p><strong> 구사 언어 </strong></p>
+            <p>
+              <strong> 구사 언어 </strong>
+            </p>
             <p>{userData.fluentLanguage}</p>
           </Circle>
           <Circle>
-            <p><strong> 학습 언어 </strong></p>
+            <p>
+              <strong> 학습 언어 </strong>
+            </p>
             <p>{userData.learningLanguage}</p>
           </Circle>
         </CircleContainer>
@@ -131,12 +137,12 @@ const Container = styled.div`
 
 const ProfileContainer = styled.div`
   display: flex;
-  align-items: flex-start; 
+  align-items: flex-start;
 `;
 
 const ProfileImageContainer = styled.div`
   position: relative;
-  margin-right: 20px; 
+  margin-right: 20px;
 `;
 
 const ProfileImage = styled.img`
@@ -147,7 +153,7 @@ const ProfileImage = styled.img`
 const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start; 
+  align-items: flex-start;
 `;
 
 const InfoRow = styled.div`
@@ -173,7 +179,7 @@ const ButtonContainer = styled.div`
 `;
 
 const EditButton = styled.button`
-  background-color: #8F4646;
+  background-color: #8f4646;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -183,7 +189,7 @@ const EditButton = styled.button`
 `;
 
 const SaveButton = styled.button`
-  background-color: #8F4646;
+  background-color: #8f4646;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -252,4 +258,3 @@ const EditingContainer = styled.div`
   justify-content: center;
   margin: 50px auto;
 `;
-
