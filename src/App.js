@@ -1,4 +1,4 @@
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
 import React from "react";
 import Login from "./pages/LoginPage/Login";
 import Write from "./pages/Write";
@@ -22,6 +22,8 @@ function App() {
         <Route path="/join" element={<Join />}></Route>
         <Route path="/Writing" element={<Writing />}></Route>
         <Route path="/edit" element={<Edit />}></Route>
+
+        <Route path="/*" element={<Navigate to="/" replace />}></Route>
       </Routes>
     </BrowserRouter>
   );

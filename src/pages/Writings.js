@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../Components/NavBar";
 const Container = styled.div`
@@ -90,17 +91,46 @@ const PageNumber = styled.button`
 const Writing = styled.div``;
 //모든 글 보기
 export default function Writings() {
-  const [storiesData, setStoriesData] = useState([]);
+  const [writingsData, setWritingsData] = useState([]); //api data
   const itemsPerPage = 10; // 한 페이지에 표시할 아이템 수
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const [visibleItems, setVisibleItems] = useState([]);
-
-  //API 코드
+  const [visibleItems, setVisibleItems] = useState([]); //페이지에 보이는 데이터
   const [isSuccess, setIsSuccess] = useState(false);
+  const addDummyData = () => {
+    const dummyData = {
+      totalPageCount: 1,
+      currentPageNumber: 0,
+      totalContentCount: 2,
+      contents: [
+        {
+          userId: 5,
+          writingId: 1,
+          nickname: "chaeyeon",
+          title: "TITLE",
+          content: "CONTENT1111111111111111111111111",
+          languageTag: "English",
+          createdAt: "2023-10-04 17:14:31",
+          updatedAt: "2023-10-04 17:14:31",
+        },
+        {
+          userId: 5,
+          writingId: 2,
+          nickname: "chaeyeon",
+          title: "TITLE1",
+          content: "CONTENT1",
+          languageTag: "English",
+          createdAt: "2023-10-04 17:14:09",
+          updatedAt: "2023-10-04 17:14:09",
+        },
+      ],
+    };
+    setWritingsData((prevData) => [...prevData, dummyData]);
+  };
+  //세션스토리지 토큰
   function getTokenFromSessionStorage() {
     return sessionStorage.getItem("authToken");
   }
-
+  // API 함수
   const fetchWritings = () => {
     const pageSize = 5;
     const pageNumber = 0;
@@ -112,6 +142,7 @@ export default function Writings() {
     fetch(URL, {
       method: "GET",
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
     })
@@ -123,24 +154,26 @@ export default function Writings() {
       })
       .then((data) => {
         console.log(data);
-        setStoriesData(data);
+        setWritingsData(data);
         setIsSuccess(!isSuccess);
       })
       .catch((err) => {
         console.error(err);
       });
   };
+  //전체글목록 불러오기, 컴포넌트 처음 렌더링시에만 실행
   useEffect(() => {
     fetchWritings();
+    addDummyData();
   }, []);
+  // 페이지 숫자 PageNumber
   useEffect(() => {
-    // 페이지 숫자 PageNumber
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const itemsToShow = storiesData.slice(startIndex, endIndex);
+    const itemsToShow = writingsData.slice(startIndex, endIndex);
     setVisibleItems(itemsToShow);
-  }, [currentPage, storiesData]);
-  const totalPages = Math.ceil(storiesData.length / itemsPerPage);
+  }, [currentPage, writingsData]);
+  const totalPages = Math.ceil(writingsData.length / itemsPerPage);
 
   return (
     <div>
@@ -161,21 +194,25 @@ export default function Writings() {
       </OptionContainer>
       <Container>
         <Row>
+          {visibleItems.map((story, i) => (
+            <Box key={story.id}>
+              <ProfileImage src={story.profileUrl} alt="loading" />
+              <Link to={`/writing/${story.contents[i].writingId}`}>
+                {story.contents[i].languageTag}
+                <h2>{story.contents[i].title}</h2>
+                <p>{story.contents[i].content}</p>
+              </Link>
+            </Box>
+          ))}
+        </Row>
+        {/* <Row>
           {visibleItems.map((story) => (
             <Box key={story.id}>
               <ProfileImage src={story.profileUrl} alt="loading" />
               <Content>{story.content}</Content>
             </Box>
           ))}
-        </Row>
-        <Row>
-          {visibleItems.map((story) => (
-            <Box key={story.id}>
-              <ProfileImage src={story.profileUrl} alt="loading" />
-              <Content>{story.content}</Content>
-            </Box>
-          ))}
-        </Row>
+        </Row> */}
         <PageNumbers>
           {Array.from({ length: totalPages }).map((_, index) => (
             <PageNumber
