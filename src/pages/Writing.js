@@ -3,7 +3,7 @@ import NavBar from "../Components/NavBar";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 //내글 보기
-const Mystory = () => {
+const Writing = () => {
   const initialDisplayCount = 5; // 초기에 표시할 항목 수
   const [displayCount, setDisplayCount] = useState(initialDisplayCount);
 
@@ -57,7 +57,7 @@ const Mystory = () => {
   );
 };
 
-export default Mystory;
+export default Writing;
 
 const MywriteContainer = styled.div`
   padding: 20px;

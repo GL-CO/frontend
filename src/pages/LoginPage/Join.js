@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useQuery } from "react-query";
+import { QueryClient, useQuery, useQueryClient } from "react-query";
 import NavBar from "../../Components/NavBar";
+
 //회원가입
 const Join = () => {
   const [email, setEmail] = useState("");
@@ -12,6 +13,10 @@ const Join = () => {
   const [nickname, setNickname] = useState("");
   const [userData, setUserData] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const queryClient = useQueryClient();
+  const GC2_URL = queryClient.getQueryData("GC2_URL");
+  console.log(GC2_URL);
   const handleEmailChange = (event) => {
     setEmail(event.currentTarget.value);
   };
@@ -51,8 +56,8 @@ const Join = () => {
     onClickSignUp(userData);
   };
   const onClickSignUp = (userData) => {
-    const URL =
-      "http://ec2-13-209-43-38.ap-northeast-2.compute.amazonaws.com:8080/v1/user/signup";
+    const URL = `${GC2_URL}:8080/v1/user/signup`;
+    // const URL = "8080/v1/user/signup";
     fetch(URL, {
       method: "POST",
       headers: {
@@ -75,7 +80,7 @@ const Join = () => {
         console.error(err);
       });
   };
-  console.log("userData : ", userData);
+  // console.log("userData : ", userData);
   return (
     <div>
       <NavBar></NavBar>

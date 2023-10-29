@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../Components/NavBar";
@@ -13,7 +14,6 @@ const OptionContainer = styled.div`
   text-align: center;
   padding: 16px;
 `;
-
 const Tag = styled.div`
   align-items: center;
   width: 10%;
@@ -23,7 +23,6 @@ const Tag = styled.div`
   border-radius: 20px;
   margin-right: auto;
 `;
-
 const Search = styled.input`
   width: 10%;
   padding: 8px;
@@ -41,14 +40,12 @@ const Search = styled.input`
     }
   }
 `;
-
 const SearchIcon = styled.svg`
   margin-right: auto;
   &:hover {
     cursor: pointer;
   }
 `;
-
 const Box = styled.div`
   display: flex;
   border: 1px solid #ccc;
@@ -56,28 +53,23 @@ const Box = styled.div`
   margin: 10px;
   align-items: center;
 `;
-
 const ProfileImage = styled.img`
   width: 50px;
   height: 50px;
   margin-right: 10px;
 `;
-
 const Content = styled.div``;
-
 const Row = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2열로 설정 */
   gap: 10px; /* 열 사이의 간격 조절 */
   justify-content: center;
 `;
-
 const PageNumbers = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 10px;
 `;
-
 const PageNumber = styled.button`
   background-color: ${(props) => (props.active ? "#007bff" : "transparent")};
   color: ${(props) => (props.active ? "#fff" : "#007bff")};
@@ -88,6 +80,7 @@ const PageNumber = styled.button`
   margin: 0 5px;
   cursor: pointer;
 `;
+
 const Writing = styled.div``;
 //모든 글 보기
 export default function Writings() {
@@ -96,34 +89,9 @@ export default function Writings() {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [visibleItems, setVisibleItems] = useState([]); //페이지에 보이는 데이터
   const [isSuccess, setIsSuccess] = useState(false);
-  const addDummyData = () => {
-    const dummyData = {
-      totalPageCount: 1,
-      currentPageNumber: 0,
-      totalContentCount: 2,
-      contents: [
-        {
-          userId: 5,
-          writingId: 1,
-          nickname: "chaeyeon",
-          title: "TITLE",
-          content: "CONTENT1111111111111111111111111",
-          languageTag: "English",
-          createdAt: "2023-10-04 17:14:31",
-          updatedAt: "2023-10-04 17:14:31",
-        },
-        {
-          userId: 5,
-          writingId: 2,
-          nickname: "chaeyeon",
-          title: "TITLE1",
-          content: "CONTENT1",
-          languageTag: "English",
-          createdAt: "2023-10-04 17:14:09",
-          updatedAt: "2023-10-04 17:14:09",
-        },
-      ],
-    };
+  const queryClient = useQueryClient();
+  const GC2_URL = queryClient.getQueryData("GC2_URL");
+  const addData = () => {
     setWritingsData((prevData) => [...prevData, dummyData]);
   };
   //세션스토리지 토큰
@@ -132,11 +100,10 @@ export default function Writings() {
   }
   // API 함수
   const fetchWritings = () => {
-    const pageSize = 5;
+    const pageSize = 10;
     const pageNumber = 0;
-    const URL =
-      "http://ec2-13-209-43-38.ap-northeast-2.compute.amazonaws.com:8080/v1/writing";
-    const query = `http://localhost:3000/writings?pageSize=${pageSize}&pageNumber=${pageNumber}`;
+    const query = `?pageSize=${pageSize}&pageNumber=${pageNumber}`;
+    const URL = `${GC2_URL}/v1/writing${query}`;
     const authToken = getTokenFromSessionStorage();
     console.log(authToken);
     fetch(URL, {
@@ -164,7 +131,7 @@ export default function Writings() {
   //전체글목록 불러오기, 컴포넌트 처음 렌더링시에만 실행
   useEffect(() => {
     fetchWritings();
-    addDummyData();
+    addData();
   }, []);
   // 페이지 숫자 PageNumber
   useEffect(() => {
@@ -194,7 +161,7 @@ export default function Writings() {
       </OptionContainer>
       <Container>
         <Row>
-          {visibleItems.map((story, i) => (
+          {/* {visibleItems.map((story, i) => (
             <Box key={story.id}>
               <ProfileImage src={story.profileUrl} alt="loading" />
               <Link to={`/writing/${story.contents[i].writingId}`}>
@@ -203,7 +170,7 @@ export default function Writings() {
                 <p>{story.contents[i].content}</p>
               </Link>
             </Box>
-          ))}
+          ))} */}
         </Row>
         {/* <Row>
           {visibleItems.map((story) => (

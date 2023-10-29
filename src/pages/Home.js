@@ -40,7 +40,6 @@ const Tag = styled.div`
   margin-right: auto;
   margin-left: 100px;
 `;
-
 const Search = styled.input`
   width: 10%;
   padding: 8px;
@@ -75,7 +74,6 @@ const Container = styled.div`
   border: 1px solid #ccc;
   margin: 50px auto;
 `;
-
 const StoryBox = styled.div`
   background-color: #7fffd4;
   margin: 50px auto;
