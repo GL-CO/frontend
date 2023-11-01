@@ -105,6 +105,7 @@ const StoryText = styled.div`
   overflow-wrap: break-word;
 `;
 
+//메인페이지
 export default function Home() {
   return (
     <div>

@@ -19,8 +19,10 @@ const MenuContainer = styled.div``;
 const MenuItem = styled.a`
   margin-right: 70px;
   text-decoration: none;
+  color: inherit;
+  padding: 10px;
   &:hover {
-    background-color: red;
+    background-color: #bbb;
   }
 `;
 
@@ -35,7 +37,7 @@ const SignUpButton = styled.button`
   font-size: 15px;
   background-color: white;
   &:hover {
-    background-color: red;
+    background-color: #bbb;
   }
 `;
 
@@ -48,7 +50,7 @@ const SignInButton = styled.button`
   margin-left: 20px;
   background-color: white;
   &:hover {
-    background-color: red;
+    background-color: #bbb;
   }
 `;
 
@@ -85,15 +87,19 @@ export default function NavBar() {
 
   return (
     <Container>
-      <Logo>GL-CO</Logo>
+      <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <Logo>GL-CO</Logo>
+      </Link>
+
       <MenuContainer>
         <MenuItem href="/">홈</MenuItem>
-        <MenuItem href="/stories">글 목록</MenuItem>
+        <MenuItem href="/writings">글 목록</MenuItem>
         <MenuItem href="/write">글쓰기</MenuItem>
         <MenuItem href="/mypage">마이페이지</MenuItem>
         {/* <MenuItem href="/">문의</MenuItem> */}
       </MenuContainer>
       <ButtonContainer>
+
         {isLoggedIn ? (
           <LogoutButton onClick= {handleLogout}> Logout </LogoutButton>
         ) : (
@@ -107,6 +113,7 @@ export default function NavBar() {
             </Link>
           </>
         )}
+
       </ButtonContainer>
     </Container>
   );

@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
+//로그인
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showEmailError, setShowEmailError] = useState(false); 
-  const [showPasswordError, setShowPasswordError] = useState(false); 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showEmailError, setShowEmailError] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -19,17 +19,21 @@ const Login = () => {
     }
   }, []);
 
+  const saveTokenToSessionStorage = (token) => {
+    sessionStorage.setItem("authToken", token);
+  };
+  
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if(!email) {
+    if (!email) {
       setShowEmailError(true);
       return;
     } else {
       setShowEmailError(false);
     }
-    
-    if(!password) {
+
+    if (!password) {
       setShowPasswordError(true);
       return;
     } else {
@@ -48,13 +52,12 @@ const Login = () => {
         setLoggedIn(true);
         navigate('/');
         // navigate('/mypage',{state: {email: response.data.email}});
-       
+     
       } else {
-        console.error('로그인 실패', response.data);
-       
+        console.error("로그인 실패", response.data);
       }
     } catch (error) {
-      console.error('로그인 실패', error);
+      console.error("로그인 실패", error);
     }
   };
 
@@ -67,7 +70,6 @@ const Login = () => {
   return (
     <LoginWrapper>
       <Container>
-        
         <SignUpcontainer>
           <h1>반갑습니다!</h1>
           <p> 회원가입 하러 가기 </p>
@@ -90,18 +92,19 @@ const Login = () => {
             </Label>
 
             {showEmailError && <ErrorText>Email을 입력해주세요.</ErrorText>}
-        
-            
+
             <Label>
-              <Input type="password" 
-              placeholder="Password" 
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setShowPasswordError(false);
-              }}
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setShowPasswordError(false);
+                }}
               />
             </Label>
+
            
             {showPasswordError && <ErrorText>Password를 입력해주세요.</ErrorText>}
             {loggedIn ? (
@@ -115,7 +118,6 @@ const Login = () => {
             {/* <SubmitButton type="submit">Sign in</SubmitButton> */}
           </form>
         </FormContainer>
-
       </Container>
     </LoginWrapper>
   );
@@ -220,25 +222,25 @@ const SubmitButton = styled.button`
 `;
 
 const JoinLink = styled.a`
-background: transparent;
-border: 2px solid #fff;
-color: #fff;
-padding: 10px 20px;
-cursor: pointer;
-transition: background 0.3s, color 0.3s;
-font-size: 16px;
+  background: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+  font-size: 16px;
 
-&:hover {
-  background: #fff;
-  color: #ff416c;
-}
+  &:hover {
+    background: #fff;
+    color: #ff416c;
+  }
 `;
 
 const ErrorText = styled.div`
   color: red;
   font-size: 14px;
   margin-top: 5px;
-  text-align : center;
+  text-align: center;
 `;
 
 const LogoutButton = styled.button`

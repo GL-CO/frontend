@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import NavBar from "../../Components/NavBar";
+//회원가입
 const Join = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
