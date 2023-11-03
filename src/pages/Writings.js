@@ -103,7 +103,7 @@ export default function Writings() {
     const pageSize = 10;
     const pageNumber = 0;
     const query = `?pageSize=${pageSize}&pageNumber=${pageNumber}`;
-    const URL = `${GC2[0]}/v1/writing${query}`;
+    const URL = `${GC2[0]}:8080/v1/writing${query}`;
     console.log(URL);
     const authToken = getTokenFromSessionStorage();
     console.log("getToken : ", authToken);
