@@ -51,6 +51,8 @@ const SearchIcon = styled.svg`
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  width: 60%;
+  justify-content: center; // 수평 가운데 정렬
 `;
 
 const Content = styled.div`
@@ -59,9 +61,15 @@ const Content = styled.div`
 `;
 
 const Item = styled.div`
-  width: 50%;
+  width: calc(
+    50% - 20px
+  ); // 2열이므로 50%의 너비를 가지도록 하고, 마진을 고려하여 조금 줄여줌
   padding: 10px;
+  margin: 10px; // 마진 추가
   box-sizing: border-box;
+  flex-direction: column; // 수직 정렬
+  align-items: center; // 수평 가운데 정렬
+  background-color: #a0a0a0;
 `;
 
 const PageNumbersContainer = styled.div`
@@ -88,10 +96,26 @@ const PageNumber = styled.div`
 `;
 //모든 글 보기
 export default function Writings() {
-  const [writingsData, setWritingsData] = useState([]); //api data
+  const [writingsData, setWritingsData] = useState({
+    totalPageCount: 0,
+    currentPageNumber: 0,
+    totalContentCount: 0,
+    contents: [
+      {
+        writingId: 0,
+        userId: 0,
+        nickname: "",
+        title: "",
+        content: "",
+        languageTag: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+  });
   const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
   const pageSize = 10;
-  const [pageNumber, setPageNumber] = useState(10);
+  const [pageNumber, setPageNumber] = useState(0);
   const [totalPageCount, setTotalPageCount] = useState(0);
 
   // let currentPageNumber; // 현재 페이지 번호
@@ -121,7 +145,7 @@ export default function Writings() {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        console.log("response : ", data);
         setWritingsData(data);
         setTotalPageCount(data.totalPageCount);
       })
@@ -161,11 +185,14 @@ export default function Writings() {
       </OptionContainer>
       <div>
         <Container>
-          <Content>
-            {Array.from({ length: pageNumber }, (_, index) => (
-              <Item key={index}>Content {startIndex + index + 1}</Item>
-            ))}
-          </Content>
+          {writingsData.contents.map((v, i) => (
+            <Link to={"a"}>
+              <Item key={i}>
+                <h3>{v.title}</h3>
+                <p>{v.content}</p>
+              </Item>
+            </Link>
+          ))}
         </Container>
         <PageNumbersContainer>
           {[...Array(totalPageCount)].map((_, index) => (

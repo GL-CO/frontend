@@ -24,6 +24,7 @@ function App() {
           <Route path="/writings" element={<Writings />}></Route>
           <Route path="/writing" element={<Writing />}></Route>
           <Route path="/edit" element={<Edit />}></Route>
+          <Route path="/writing/:writingId" element={<Writing />}></Route>
 
           <Route path="/*" element={<PageNotFound />}></Route>
         </Routes>
