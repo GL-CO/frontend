@@ -41,6 +41,7 @@ const MessageInput = styled.input`
   width: 100%;
 `;
 
+//첨삭페이지
 export default function Edit() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");

@@ -1,7 +1,8 @@
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
 import React from "react";
-
+import { LoginAuthToken } from "../Components/atoms";
+import { useRecoilValue } from "recoil";
 const BgImage = styled.div`
   justify-content: center;
   display: flex;
@@ -40,7 +41,6 @@ const Tag = styled.div`
   margin-right: auto;
   margin-left: 100px;
 `;
-
 const Search = styled.input`
   width: 10%;
   padding: 8px;
@@ -75,7 +75,6 @@ const Container = styled.div`
   border: 1px solid #ccc;
   margin: 50px auto;
 `;
-
 const StoryBox = styled.div`
   background-color: #7fffd4;
   margin: 50px auto;
@@ -107,6 +106,8 @@ const StoryText = styled.div`
 
 //메인페이지
 export default function Home() {
+  const token = useRecoilValue(LoginAuthToken);
+  console.log("token : ", token);
   return (
     <div>
       <NavBar></NavBar>

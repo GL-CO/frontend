@@ -6,32 +6,30 @@ import Home from "./pages/Home";
 import MyPage from "./pages/Mypage";
 import Writings from "./pages/Writings";
 import Join from "./pages/LoginPage/Join";
-<<<<<<< HEAD
 import Writing from "./pages/Writing";
-=======
-import Mywrite from "./pages/Mywrite";
-import MywritePage from "./pages/MywritePage";
-
->>>>>>> 0d146cf448aeb23b040171c6c1a6e575b3d5c9d4
-
 import Edit from "./pages/Edit";
+import PageNotFound from "./pages/PageNotFound";
+import { RecoilRoot } from "recoil";
+
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/join" element={<Join />}></Route>
-        <Route path="/write" element={<Write />}></Route>
-        <Route path="/mypage" element={<MyPage />}></Route>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/Writings" element={<Writings />}></Route>
-        <Route path="/join" element={<Join />}></Route>
-        <Route path="/Writing" element={<Writing />}></Route>
-        <Route path="/edit" element={<Edit />}></Route>
+    <RecoilRoot>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/join" element={<Join />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/write" element={<Write />}></Route>
+          <Route path="/mypage" element={<MyPage />}></Route>
+          <Route path="/writings" element={<Writings />}></Route>
+          <Route path="/writing" element={<Writing />}></Route>
+          <Route path="/edit" element={<Edit />}></Route>
+          <Route path="/writing/:writingId" element={<Writing />}></Route>
 
-        <Route path="/*" element={<Navigate to="/" replace />}></Route>
-      </Routes>
-    </BrowserRouter>
+          <Route path="/*" element={<PageNotFound />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </RecoilRoot>
   );
 }
 export default App;

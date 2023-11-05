@@ -1,8 +1,11 @@
-import React, { useEffect, useState} from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import NavBar from "../../Components/NavBar";
+import { useRecoilState } from "recoil";
+import { GC2_URL } from "../../Components/atoms";
+import { LoginAuthToken } from "../../Components/atoms";
 //로그인
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,19 +13,25 @@ const Login = () => {
   const [showEmailError, setShowEmailError] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
   const navigate = useNavigate();
+  const GC2 = useRecoilState(GC2_URL);
+  const [token, setToken] = useRecoilState(LoginAuthToken);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if(isLoggedIn === 'true'){
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
       setLoggedIn(true);
     }
   }, []);
 
   const saveTokenToSessionStorage = (token) => {
     sessionStorage.setItem("authToken", token);
+    console.log(token);
   };
-  
+  const setAuthToken = (newToken) => {
+    setToken(newToken);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -41,18 +50,19 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post('http://ec2-3-34-237-26.ap-northeast-2.compute.amazonaws.com:8080/v1/user/login', {
+      const URL = `${GC2[0]}:8080/v1/user/login`;
+      const response = await axios.post(URL, {
         email,
         password,
       });
-
       if (response.status === 200) {
-        console.log('로그인 성공', response.data);
-        localStorage.setItem('isLoggedIn', 'true');
+        console.log("로그인 성공", response.data);
+        // navigate("/");
+        setToken(response.data.accessToken);
+        saveTokenToSessionStorage(response.data.accessToken);
+        localStorage.setItem("isLoggedIn", "true");
         setLoggedIn(true);
-        navigate('/');
-        // navigate('/mypage',{state: {email: response.data.email}});
-     
+        navigate("/");
       } else {
         console.error("로그인 실패", response.data);
       }
@@ -62,64 +72,68 @@ const Login = () => {
   };
 
   const handleLogout = () => {
-    localStorage.setItem('isLoggedIn', 'false');
+    localStorage.setItem("isLoggedIn", "false");
     setLoggedIn(false);
-    navigate('/');
-  }
-  
+    navigate("/");
+  };
+
   return (
-    <LoginWrapper>
-      <Container>
-        <SignUpcontainer>
-          <h1>반갑습니다!</h1>
-          <p> 회원가입 하러 가기 </p>
-          <JoinLink href="/Join"> Sign Up </JoinLink>
-        </SignUpcontainer>
+    <div>
+      <NavBar></NavBar>
+      <LoginWrapper>
+        <Container>
+          <SignUpcontainer>
+            <h1>반갑습니다!</h1>
+            <p> 회원가입 하러 가기 </p>
+            <JoinLink href="/Join"> Sign Up </JoinLink>
+          </SignUpcontainer>
 
-        <FormContainer>
-          <form onSubmit={handleLogin}>
-            <h1>Sign In</h1>
-            <Label> 
-              <Input 
-              type="email" 
-              placeholder="Email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setShowEmailError(false);
-              }} 
-              />
-            </Label>
+          <FormContainer>
+            <form onSubmit={handleLogin}>
+              <h1>Sign In</h1>
+              <Label>
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setShowEmailError(false);
+                  }}
+                />
+              </Label>
 
-            {showEmailError && <ErrorText>Email을 입력해주세요.</ErrorText>}
+              {showEmailError && <ErrorText>Email을 입력해주세요.</ErrorText>}
 
-            <Label>
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setShowPasswordError(false);
-                }}
-              />
-            </Label>
+              <Label>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setShowPasswordError(false);
+                  }}
+                />
+              </Label>
 
-           
-            {showPasswordError && <ErrorText>Password를 입력해주세요.</ErrorText>}
-            {loggedIn ? (
-              <LogoutButton type="button" onClick={handleLogout}>
-                로그아웃 
-              </LogoutButton>
-            ) : (
-              <SubmitButton type = "submit"> Sign in </SubmitButton>
-            )}
-            <a href="/">Forgot your password?</a>
-            {/* <SubmitButton type="submit">Sign in</SubmitButton> */}
-          </form>
-        </FormContainer>
-      </Container>
-    </LoginWrapper>
+              {showPasswordError && (
+                <ErrorText>Password를 입력해주세요.</ErrorText>
+              )}
+              {loggedIn ? (
+                <LogoutButton type="button" onClick={handleLogout}>
+                  로그아웃
+                </LogoutButton>
+              ) : (
+                <SubmitButton type="submit"> Sign in </SubmitButton>
+              )}
+              <a href="/">Forgot your password?</a>
+              {/* <SubmitButton type="submit">Sign in</SubmitButton> */}
+            </form>
+          </FormContainer>
+        </Container>
+      </LoginWrapper>
+    </div>
   );
 };
 

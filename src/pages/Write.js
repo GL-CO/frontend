@@ -1,6 +1,9 @@
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
 import React, { useState } from "react";
+import { useQueryClient } from "react-query";
+import { useRecoilState } from "recoil";
+import { GC2_URL } from "../Components/atoms";
 
 const FormContainer = styled.div`
   background-color: #ffffff;
@@ -48,11 +51,6 @@ const Button = styled.button`
 const Tag = styled.select``;
 //글 쓰기
 export default function Write() {
-  const [tags, setTags] = useState([
-    { value: "", label: "선택 없음" },
-    { value: "Korean", label: "한국어" },
-    { value: "English", label: "영어" },
-  ]);
   const options = [
     { value: "", label: "선택 없음" },
     { value: "Korean", label: "한국어" },
@@ -63,32 +61,34 @@ export default function Write() {
   const [languageTag, setLanguageTag] = useState("");
   const [writeData, setWriteData] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
-  const handleTagsChange = (e) => {
-    console.log(e.target.value);
-  };
+
+  const GC2 = useRecoilState(GC2_URL);
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
   const handleParagraphChange = (e) => {
     setContent(e.target.value);
   };
+  const handleTagsChange = (e) => {
+    setLanguageTag(e.target.value);
+  };
   function getTokenFromSessionStorage() {
     return sessionStorage.getItem("authToken");
   }
-  const authToken = getTokenFromSessionStorage();
   const handleSubmit = (e) => {
     e.preventDefault();
     const writeData = {
-      tag: tags.value,
       title: title,
       content: content,
+      languageTag: languageTag,
     };
+    console.log(writeData);
     onClickWrite(writeData);
   };
-
+  const authToken = getTokenFromSessionStorage();
+  console.log(authToken);
   const onClickWrite = (writeData) => {
-    const URL =
-      "http://ec2-13-209-43-38.ap-northeast-2.compute.amazonaws.com:8080/v1/writing";
+    const URL = `${GC2[0]}:8080/v1/writing`;
     const authToken = getTokenFromSessionStorage();
     console.log(authToken);
     fetch(URL, {
@@ -103,10 +103,11 @@ export default function Write() {
         if (!res.ok) {
           throw new Error(`Response Error : ${res.status}`);
         }
+
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        console.log("data : ", data);
         setWriteData(data);
         setIsSuccess(!isSuccess);
       })
@@ -134,6 +135,7 @@ export default function Write() {
           <FormGroup>
             <Label htmlFor="title">제목 :</Label>
             <Input
+              onChange={handleTitleChange}
               id="title"
               type="text"
               placeholder="제목을 입력하세요"
@@ -142,6 +144,7 @@ export default function Write() {
           <FormGroup>
             <Label htmlFor="content">내용 :</Label>
             <Textarea
+              onChange={handleParagraphChange}
               id="content"
               type="text"
               placeholder="내용을 입력하세요"
