@@ -50,26 +50,22 @@ const SearchIcon = styled.svg`
 
 const Container = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  width: 60%;
-  justify-content: center; // 수평 가운데 정렬
+  justify-content: center;
 `;
-
-const Content = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // 5열로 설정
+  grid-template-rows: repeat(5, 1fr); // 2행으로 설정
+  gap: 16px; // 박스 사이의 간격
 `;
-
 const Item = styled.div`
-  width: calc(
-    50% - 20px
-  ); // 2열이므로 50%의 너비를 가지도록 하고, 마진을 고려하여 조금 줄여줌
-  padding: 10px;
-  margin: 10px; // 마진 추가
-  box-sizing: border-box;
-  flex-direction: column; // 수직 정렬
-  align-items: center; // 수평 가운데 정렬
-  background-color: #a0a0a0;
+  width: 100%; // 박스의 너비
+  height: 200px; // 박스의 높이
+  background-color: #ddd; // 박스의 배경색
+  display: flex;
+  flex-direction: column; // 자식 요소들을 수직으로 정렬
+  justify-content: center;
+  align-items: center;
 `;
 
 const PageNumbersContainer = styled.div`
@@ -185,14 +181,16 @@ export default function Writings() {
       </OptionContainer>
       <div>
         <Container>
-          {writingsData.contents.map((v, i) => (
-            <Link to={"a"}>
-              <Item key={i}>
-                <h3>{v.title}</h3>
-                <p>{v.content}</p>
-              </Item>
-            </Link>
-          ))}
+          <Grid>
+            {writingsData.contents.map((v, i) => (
+              <Link to={"a"}>
+                <Item key={i}>
+                  <h3>{v.title}</h3>
+                  <p>{v.content}</p>
+                </Item>
+              </Link>
+            ))}
+          </Grid>
         </Container>
         <PageNumbersContainer>
           {[...Array(totalPageCount)].map((_, index) => (

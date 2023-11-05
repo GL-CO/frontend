@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,15 @@ const Login = () => {
   const navigate = useNavigate();
   const GC2 = useRecoilState(GC2_URL);
   const [token, setToken] = useRecoilState(LoginAuthToken);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
+      setLoggedIn(true);
+    }
+  }, []);
+
   const saveTokenToSessionStorage = (token) => {
     sessionStorage.setItem("authToken", token);
     console.log(token);
@@ -22,6 +31,7 @@ const Login = () => {
   const setAuthToken = (newToken) => {
     setToken(newToken);
   };
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -50,7 +60,9 @@ const Login = () => {
         // navigate("/");
         setToken(response.data.accessToken);
         saveTokenToSessionStorage(response.data.accessToken);
-        console.log("token : ", token);
+        localStorage.setItem("isLoggedIn", "true");
+        setLoggedIn(true);
+        navigate("/");
       } else {
         console.error("로그인 실패", response.data);
       }
@@ -59,7 +71,12 @@ const Login = () => {
     }
   };
 
-  const authToken = console.log();
+  const handleLogout = () => {
+    localStorage.setItem("isLoggedIn", "false");
+    setLoggedIn(false);
+    navigate("/");
+  };
+
   return (
     <div>
       <NavBar></NavBar>
@@ -103,8 +120,15 @@ const Login = () => {
               {showPasswordError && (
                 <ErrorText>Password를 입력해주세요.</ErrorText>
               )}
-              <a href="#">Forgot your password?</a>
-              <SubmitButton type="submit">Sign in</SubmitButton>
+              {loggedIn ? (
+                <LogoutButton type="button" onClick={handleLogout}>
+                  로그아웃
+                </LogoutButton>
+              ) : (
+                <SubmitButton type="submit"> Sign in </SubmitButton>
+              )}
+              <a href="/">Forgot your password?</a>
+              {/* <SubmitButton type="submit">Sign in</SubmitButton> */}
             </form>
           </FormContainer>
         </Container>
@@ -231,4 +255,19 @@ const ErrorText = styled.div`
   font-size: 14px;
   margin-top: 5px;
   text-align: center;
+`;
+
+const LogoutButton = styled.button`
+  background: #800000;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #945050;
+  }
 `;
