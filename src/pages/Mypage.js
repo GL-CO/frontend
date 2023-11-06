@@ -15,6 +15,7 @@ function MyPage() {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState('');
+  const [requestStatus, setRequestStatus] = useState(null);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -32,6 +33,64 @@ function MyPage() {
     // 예시: URL을 받아온 경우
     const imageURL = URL.createObjectURL(imageFile);
     setUserData({ ...userData, profileImage: imageURL });
+  };
+
+  const handleFriendRequest = (toUserId) => {
+    fetch('http://ec2-3-34-237-26.ap-northeast-2.compute.amazonaws.com:8080/v1/friend/request',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => {
+      if(response.status === 201) {
+        setRequestStatus('success');
+      } else{
+        setRequestStatus('error');
+      }
+    })
+    .catch(error => {
+      console.error('Error',error);
+      setRequestStatus('Error');
+    });
+  };
+
+  const handleAcceptFriend = (fromUserId) => {
+    fetch('http://ec2-3-34-237-26.ap-northeast-2.compute.amazonaws.com:8080/v1/friend/accept',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => {
+      if(response.status === 200){
+        setRequestStatus('accept success');
+      } else {
+        setRequestStatus('accept error');
+      }
+    })
+    .catch(error => {
+      console.error('Error', error);
+    });
+  };
+
+  const handleRejectFriend = (fromUserId) => {
+    fetch('http://ec2-3-34-237-26.ap-northeast-2.compute.amazonaws.com:8080/v1/friend/reject',{
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => {
+      if(response.status === 200){
+        setRequestStatus('accept success');
+      } else{
+        setRequestStatus('accept error');
+      }
+    })
+    .catch(error => {
+      console.error('Error', error);
+    });
   };
 
   return (
@@ -101,6 +160,12 @@ function MyPage() {
 
         <FriendContainer>
           <p> 친구 목록</p>
+          {requestStatus === 'success' && <p>친구가 요청을 보냈습니다!</p>}
+          <div>
+            <button onClick={() => handleFriendRequest(2)}>친구 요청</button>
+            <button onClick={() => handleAcceptFriend(1)}>친구 수락</button>
+            <button onClick={() => handleRejectFriend(1)}>친구 거절</button> 
+          </div>
         </FriendContainer>
 
         <WrittenContainer>
@@ -252,4 +317,5 @@ const EditingContainer = styled.div`
   justify-content: center;
   margin: 50px auto;
 `;
+
 
