@@ -43,7 +43,9 @@ const Login = () => {
       });
 
       if (response.status === 200) {
+        const token = response.data.token;
         console.log('로그인 성공', response.data);
+        localStorage.setItem('token', token);
         localStorage.setItem('isLoggedIn', 'true');
         setLoggedIn(true);
         navigate('/');
