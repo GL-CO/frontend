@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from "../Components/NavBar";
 import styled from 'styled-components';
+import { useRecoilState } from "recoil";
+import { GC2_URL } from "../Components/atoms";
 
 
 function MyPage() {
   const [userData, setUserData] = useState({
-    username: '사용자 이름',
-    nickname: '사용자 별명',
-    email: '사용자 이메일',
-    points: 100,
-    fluentLanguage: '한국어',
-    learningLanguage: '영어',
-    profileImage: null,
+    // username: '사용자 이름',
+    // nickname: '사용자 별명',
+    // email: '사용자 이메일',
+    // points: 100,
+    // fluentLanguage: '한국어',
+    // learningLanguage: '영어',
+    // profileImage: null,
   });
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState('');
   const [requestStatus, setRequestStatus] = useState(null);
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('token');
+  const [token, setToken] = useRecoilState(GC2_URL);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, [setToken]);
+
+  // function getToken(){
+  // //   return localStorage.getItem('token');
+  // // }
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -37,7 +51,6 @@ function MyPage() {
   };
 
   const handleFriendRequest = () => {
-  
     fetch('http://ec2-3-34-237-26.ap-northeast-2.compute.amazonaws.com:8080/v1/friend/request',{
       method: 'POST',
       headers: {
@@ -56,6 +69,11 @@ function MyPage() {
       } else{
         setRequestStatus('error');
       }
+      return response.json();
+    })
+    .then((data)=> {
+      console.log("response : ", data);
+      setUserData(data);
     })
     .catch(error => {
       console.error('Error',error);
