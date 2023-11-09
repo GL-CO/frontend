@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../Components/NavBar";
 import { useRecoilState } from "recoil";
@@ -114,6 +114,8 @@ export default function Writings() {
   const [pageNumber, setPageNumber] = useState(0);
   const [totalPageCount, setTotalPageCount] = useState(0);
 
+  const location = useLocation();
+  console.log(location);
   // let currentPageNumber; // 현재 페이지 번호
   // let totalContentCount; // 전체 글 수
 
@@ -183,7 +185,7 @@ export default function Writings() {
         <Container>
           <Grid>
             {writingsData.contents.map((v, i) => (
-              <Link to={"a"}>
+              <Link to={`${location.pathname}/${v.writingId}`}>
                 <Item key={i}>
                   <h3>{v.title}</h3>
                   <p>{v.content}</p>
