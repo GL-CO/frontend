@@ -109,13 +109,11 @@ export default function Writings() {
       },
     ],
   });
-  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
   const pageSize = 10;
-  const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0); //api로 요청할 페이지 숫자
+  const [currentPage, setCurrentPage] = useState(0); // ?
   const [totalPageCount, setTotalPageCount] = useState(0);
-
   const location = useLocation();
-  console.log(location);
   // let currentPageNumber; // 현재 페이지 번호
   // let totalContentCount; // 전체 글 수
 
@@ -125,10 +123,11 @@ export default function Writings() {
     return sessionStorage.getItem("authToken");
   }
   // API 함수
-  const fetchWritings = () => {
+  const fetchWritings = (pageNumber) => {
     const query = `?pageSize=${pageSize}&pageNumber=${pageNumber}`;
     const URL = `${GC2[0]}:8080/v1/writing${query}`;
     const authToken = getTokenFromSessionStorage();
+    console.log(URL);
     fetch(URL, {
       method: "GET",
       headers: {
@@ -153,16 +152,16 @@ export default function Writings() {
   };
   //전체글목록 불러오기, 컴포넌트 처음 렌더링시에만 실행
   useEffect(() => {
-    fetchWritings();
+    fetchWritings(pageNumber);
   }, []);
   // 페이지 번호 클릭 시 페이지 변경
-  const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handlePageClick = (page) => {
+    setPageNumber(page);
+    console.log(page);
+    fetchWritings(page); // 페이지 번호에 해당하는 글 목록을 가져오도록 수정
   };
 
   // 현재 페이지의 내용 계산
-  const startIndex = (currentPage - 1) * pageNumber;
-  const endIndex = startIndex + pageNumber;
 
   return (
     <div>
@@ -198,7 +197,7 @@ export default function Writings() {
           {[...Array(totalPageCount)].map((_, index) => (
             <PageNumber
               key={index}
-              onClick={() => handlePageClick(index + 1)}
+              onClick={() => handlePageClick(index)} //배열인덱스 오차로 +1
               selected={currentPage === index + 1}
             >
               {index + 1}
