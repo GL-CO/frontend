@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import NavBar from "../Components/NavBar";
+
 const ChatContainer = styled.div`
   width: 600px;
-  height: 400px; /* 높이를 고정할 수 있도록 설정 */
+  height: 400px;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
@@ -16,11 +17,12 @@ const ChatMessages = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll; /* 스크롤을 활성화 */
+  overflow-y: scroll;
 `;
 
 const MessageContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: ${(props) => (props.sentByMe ? "flex-end" : "flex-start")};
 `;
 
@@ -41,10 +43,66 @@ const MessageInput = styled.input`
   width: 100%;
 `;
 
-//첨삭페이지
+const CommentSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+`;
+
+const CommentInputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+`;
+
+const CommentInput = styled.input`
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 8px;
+`;
+
+const CommentButton = styled.button`
+  padding: 8px 16px;
+  background-color: #8f4646;
+  margin-top: 5px;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: 8px;
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+const Comment = styled.div`
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+`;
+
+const DeleteButton = styled.button`
+  background-color:#0056b3 ;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 5px;
+  &:hover {
+    background-color: darkred;
+  }
+`;
+
 export default function Edit() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [commentText, setCommentText] = useState("");
+  const [activeMessageIndex, setActiveMessageIndex] = useState(null);
   const messageInputRef = useRef(null);
   const chatMessagesRef = useRef(null);
 
@@ -70,6 +128,7 @@ export default function Edit() {
     const messageData = posts.map((post) => ({
       text: `${post.type} - ${post.title}: ${post.content}`,
       sentByMe: false,
+      comments: [],
     }));
 
     setMessages(messageData);
@@ -77,26 +136,68 @@ export default function Edit() {
 
   const handleSendMessage = () => {
     if (newMessage.trim() !== "") {
-      const newMessageData = { text: newMessage, sentByMe: true };
+      const newMessageData = { text: newMessage, sentByMe: true, comments: [] };
       setMessages([...messages, newMessageData]);
       setNewMessage("");
     }
   };
 
-  useEffect(() => {
-    // 메시지가 업데이트될 때 스크롤을 맨 아래로 이동
-    if (chatMessagesRef.current) {
-      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+  const handleComment = (index) => {
+    setActiveMessageIndex(index);
+  };
+
+  const handleAddComment = () => {
+    if (commentText.trim() !== "") {
+      const updatedMessages = [...messages];
+      updatedMessages[activeMessageIndex].comments.push(commentText);
+      setMessages(updatedMessages);
+      setCommentText("");
+      setActiveMessageIndex(null);
     }
-  }, [messages]);
+  };
+
+  const handleDeleteComment = (messageIndex, commentIndex) => {
+    const updatedMessages = [...messages];
+    updatedMessages[messageIndex].comments.splice(commentIndex, 1);
+    setMessages(updatedMessages);
+  };
+
+  const handleCloseComment = () => {
+    setActiveMessageIndex(null);
+    setCommentText("");
+  };
+
   return (
     <div>
-      <NavBar></NavBar>
+      <NavBar />
       <ChatContainer>
         <ChatMessages ref={chatMessagesRef}>
           {messages.map((message, index) => (
             <MessageContainer key={index} sentByMe={message.sentByMe}>
               <Message sentByMe={message.sentByMe}>{message.text}</Message>
+              <CommentSection>
+                {message.comments.map((comment, commentIndex) => (
+                  <Comment key={commentIndex}>
+                    {comment}
+                    <DeleteButton onClick={() => handleDeleteComment(index, commentIndex)}>삭제</DeleteButton>
+                  </Comment>
+                ))}
+                {activeMessageIndex === index && (
+                  <CommentInputContainer>
+                    <CommentInput
+                      type="text"
+                      placeholder="댓글 입력..."
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                    />
+                    <CommentButton onClick={handleAddComment}>댓글 추가</CommentButton>
+                    <CommentButton onClick={handleCloseComment}>닫기</CommentButton>
+                  </CommentInputContainer>
+                )}
+                {!activeMessageIndex && (
+                  <CommentButton onClick={() => handleComment(index)}>댓글 달기</CommentButton>
+                )}
+              </CommentSection>
             </MessageContainer>
           ))}
           <div ref={messageInputRef}></div>
@@ -113,7 +214,7 @@ export default function Edit() {
               }
             }}
           />
-          <button onClick={handleSendMessage}>전송</button>
+          <CommentButton onClick={handleSendMessage}>전송</CommentButton>
         </div>
       </ChatContainer>
     </div>
