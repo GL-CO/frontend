@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { GC2_URL } from "../Components/atoms";
+import AuthContext from "../Components/AuthContext";
+import AuthProvider from "../Components/AuthProvider";
 
 //마이페이지
 function MyPage() {
@@ -15,6 +19,7 @@ function MyPage() {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState("");
+  const authContext = useContext(AuthContext);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -32,6 +37,44 @@ function MyPage() {
     // 예시: URL을 받아온 경우
     const imageURL = URL.createObjectURL(imageFile);
     setUserData({ ...userData, profileImage: imageURL });
+  };
+
+  const GC2 = useRecoilState(GC2_URL);
+  //세션스토리지 토큰
+  function getTokenFromSessionStorage() {
+    return sessionStorage.getItem("authToken");
+  }
+
+  const addFriend = (friendUserId) => {
+    const authToken = getTokenFromSessionStorage();
+    const URL = `${GC2[0]}:8080/v1/request`;
+    const currentUserId = authContext.userId;
+
+    fetch(URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({
+        friendUserId: friendUserId,
+        currentUserId: currentUserId,
+      }),
+    })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`응답 오류: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      console.log("친구 추가 성공: ", data);
+      // UI 업데이트 또는 응답에 따른 처리를 수행할 수 있습니다
+    })
+    .catch((err) => {
+      console.error("친구 추가 오류: ", err);
+      // 오류 처리, 메시지 표시 또는 기타 작업 수행
+    });
   };
 
   return (
@@ -106,8 +149,10 @@ function MyPage() {
         <SeparatorLine />
 
         <FriendContainer>
-          <p> 친구 목록</p>
+          <p>친구 목록</p>
+              <button onClick={() => addFriend(authContext.userId)}>친구 추가</button>
         </FriendContainer>
+
 
         <WrittenContainer>
           <p> 작성글 </p>
