@@ -4,7 +4,7 @@ import styled from "styled-components";
 import NavBar from "../Components/NavBar";
 import { useRecoilState } from "recoil";
 import { GC2_URL } from "../Components/atoms";
-const Container = styled.div`
+const WritingContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,65 +47,86 @@ const SearchIcon = styled.svg`
     cursor: pointer;
   }
 `;
-const Box = styled.div`
+
+const Container = styled.div`
   display: flex;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px;
+  justify-content: center;
+`;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // 5열로 설정
+  grid-template-rows: repeat(5, 1fr); // 2행으로 설정
+  gap: 16px; // 박스 사이의 간격
+`;
+const Item = styled.div`
+  width: 100%; // 박스의 너비
+  height: 200px; // 박스의 높이
+  background-color: #ddd; // 박스의 배경색
+  display: flex;
+  flex-direction: column; // 자식 요소들을 수직으로 정렬
+  justify-content: center;
   align-items: center;
 `;
-const ProfileImage = styled.img`
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-`;
-const Content = styled.div``;
-const Row = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2열로 설정 */
-  gap: 10px; /* 열 사이의 간격 조절 */
-  justify-content: center;
-`;
-const PageNumbers = styled.div`
+
+const PageNumbersContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 10px;
-`;
-const PageNumber = styled.button`
-  background-color: ${(props) => (props.active ? "#007bff" : "transparent")};
-  color: ${(props) => (props.active ? "#fff" : "#007bff")};
-  border: 1px solid #007bff;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  margin: 0 5px;
-  cursor: pointer;
+  margin-top: 20px;
 `;
 
-const Writing = styled.div``;
+const PageNumber = styled.div`
+  cursor: pointer;
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+  ${({ selected }) =>
+    selected &&
+    `
+    background-color: #007bff;
+    color: white;
+  `}
+`;
 //모든 글 보기
 export default function Writings() {
-  const [writingsData, setWritingsData] = useState([]); //api data
-  const itemsPerPage = 10; // 한 페이지에 표시할 아이템 수
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const [visibleItems, setVisibleItems] = useState([]); //페이지에 보이는 데이터
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [writingsData, setWritingsData] = useState({
+    totalPageCount: 0,
+    currentPageNumber: 0,
+    totalContentCount: 0,
+    contents: [
+      {
+        writingId: 0,
+        userId: 0,
+        nickname: "",
+        title: "",
+        content: "",
+        languageTag: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+  });
+  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
+  const pageSize = 10;
+  const [pageNumber, setPageNumber] = useState(0);
+  const [totalPageCount, setTotalPageCount] = useState(0);
+
+  // let currentPageNumber; // 현재 페이지 번호
+  // let totalContentCount; // 전체 글 수
+
   const GC2 = useRecoilState(GC2_URL);
-  const addData = () => {
-    // setWritingsData((prevData) => [...prevData, dummyData]);
-  };
   //세션스토리지 토큰
   function getTokenFromSessionStorage() {
     return sessionStorage.getItem("authToken");
   }
   // API 함수
   const fetchWritings = () => {
-    const pageSize = 10;
-    const pageNumber = 0;
     const query = `?pageSize=${pageSize}&pageNumber=${pageNumber}`;
-    const URL = `${GC2[0]}/v1/writing${query}`;
+    const URL = `${GC2[0]}:8080/v1/writing${query}`;
     const authToken = getTokenFromSessionStorage();
-    console.log(authToken);
     fetch(URL, {
       method: "GET",
       headers: {
@@ -120,9 +141,9 @@ export default function Writings() {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        console.log("response : ", data);
         setWritingsData(data);
-        setIsSuccess(!isSuccess);
+        setTotalPageCount(data.totalPageCount);
       })
       .catch((err) => {
         console.error(err);
@@ -131,16 +152,15 @@ export default function Writings() {
   //전체글목록 불러오기, 컴포넌트 처음 렌더링시에만 실행
   useEffect(() => {
     fetchWritings();
-    addData();
   }, []);
-  // 페이지 숫자 PageNumber
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const itemsToShow = writingsData.slice(startIndex, endIndex);
-    setVisibleItems(itemsToShow);
-  }, [currentPage]);
-  const totalPages = Math.ceil(writingsData.length / itemsPerPage);
+  // 페이지 번호 클릭 시 페이지 변경
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // 현재 페이지의 내용 계산
+  const startIndex = (currentPage - 1) * pageNumber;
+  const endIndex = startIndex + pageNumber;
 
   return (
     <div>
@@ -159,39 +179,31 @@ export default function Writings() {
           <path d="M 21 3 C 11.654545 3 4 10.654545 4 20 C 4 29.345455 11.654545 37 21 37 C 24.701287 37 28.127393 35.786719 30.927734 33.755859 L 44.085938 46.914062 L 46.914062 44.085938 L 33.875 31.046875 C 36.43682 28.068316 38 24.210207 38 20 C 38 10.654545 30.345455 3 21 3 z M 21 5 C 29.254545 5 36 11.745455 36 20 C 36 28.254545 29.254545 35 21 35 C 12.745455 35 6 28.254545 6 20 C 6 11.745455 12.745455 5 21 5 z"></path>
         </SearchIcon>
       </OptionContainer>
-      <Container>
-        <Row>
-          {/* {visibleItems.map((story, i) => (
-            <Box key={story.id}>
-              <ProfileImage src={story.profileUrl} alt="loading" />
-              <Link to={`/writing/${story.contents[i].writingId}`}>
-                {story.contents[i].languageTag}
-                <h2>{story.contents[i].title}</h2>
-                <p>{story.contents[i].content}</p>
+      <div>
+        <Container>
+          <Grid>
+            {writingsData.contents.map((v, i) => (
+              <Link to={"a"}>
+                <Item key={i}>
+                  <h3>{v.title}</h3>
+                  <p>{v.content}</p>
+                </Item>
               </Link>
-            </Box>
-          ))} */}
-        </Row>
-        {/* <Row>
-          {visibleItems.map((story) => (
-            <Box key={story.id}>
-              <ProfileImage src={story.profileUrl} alt="loading" />
-              <Content>{story.content}</Content>
-            </Box>
-          ))}
-        </Row> */}
-        <PageNumbers>
-          {Array.from({ length: totalPages }).map((_, index) => (
+            ))}
+          </Grid>
+        </Container>
+        <PageNumbersContainer>
+          {[...Array(totalPageCount)].map((_, index) => (
             <PageNumber
               key={index}
-              active={index + 1 === currentPage}
-              onClick={() => setCurrentPage(index + 1)}
+              onClick={() => handlePageClick(index + 1)}
+              selected={currentPage === index + 1}
             >
               {index + 1}
             </PageNumber>
           ))}
-        </PageNumbers>
-      </Container>
+        </PageNumbersContainer>
+      </div>
     </div>
   );
 }

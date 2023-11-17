@@ -1,7 +1,7 @@
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
 import React, { useState } from "react";
-import { use } from "react-query";
+import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
 import { GC2_URL } from "../Components/atoms";
 
@@ -75,7 +75,6 @@ export default function Write() {
   function getTokenFromSessionStorage() {
     return sessionStorage.getItem("authToken");
   }
-  const authToken = getTokenFromSessionStorage();
   const handleSubmit = (e) => {
     e.preventDefault();
     const writeData = {
@@ -86,16 +85,16 @@ export default function Write() {
     console.log(writeData);
     onClickWrite(writeData);
   };
-
+  const authToken = getTokenFromSessionStorage();
+  console.log(authToken);
   const onClickWrite = (writeData) => {
-    const URL = `${GC2[0]}/v1/writing`;
+    const URL = `${GC2[0]}:8080/v1/writing`;
     const authToken = getTokenFromSessionStorage();
     console.log(authToken);
     fetch(URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // 'Authorization': "Bearer " + `${authToken}`,
         Authorization: `Bearer ${authToken}`,
       },
       body: JSON.stringify(writeData),

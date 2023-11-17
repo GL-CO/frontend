@@ -54,7 +54,7 @@ const Join = () => {
     onClickSignUp(userData);
   };
   const onClickSignUp = (userData) => {
-    const URL = `${GC2[0]}/v1/user/signup`;
+    const URL = `${GC2[0]}:8080/v1/user/signup`;
     // const URL = "8080/v1/user/signup";
     fetch(URL, {
       method: "POST",

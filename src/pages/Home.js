@@ -1,7 +1,8 @@
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
 import React from "react";
-
+import { LoginAuthToken } from "../Components/atoms";
+import { useRecoilValue } from "recoil";
 const BgImage = styled.div`
   justify-content: center;
   display: flex;
@@ -105,6 +106,8 @@ const StoryText = styled.div`
 
 //메인페이지
 export default function Home() {
+  const token = useRecoilValue(LoginAuthToken);
+  console.log("token : ", token);
   return (
     <div>
       <NavBar></NavBar>
