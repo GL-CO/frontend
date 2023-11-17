@@ -64,30 +64,30 @@ const SearchIcon = styled.svg`
     cursor: pointer;
   }
 `;
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  width: 80%;
-  height: 600px;
-  flex-wrap: wrap;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  margin: 50px auto;
-`;
-const StoryBox = styled.div`
-  background-color: #7fffd4;
-  margin: 50px auto;
-  width: 300px;
-  height: 200px;
-  background-color: dodgerblue;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-  border-radius: 20px;
-`;
+// const Container = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(2, 1fr);
+//   gap: 10px;
+//   width: 80%;
+//   height: 600px;
+//   flex-wrap: wrap;
+//   background-color: #f0f0f0;
+//   border: 1px solid #ccc;
+//   margin: 50px auto;
+// // `;
+// const Grid = styled.div`
+//   background-color: #7fffd4;
+//   margin: 50px auto;
+//   width: 300px;
+//   height: 200px;
+//   background-color: dodgerblue;
+//   color: white;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   margin-bottom: 10px;
+//   border-radius: 20px;
+// `;
 const StoryProfile = styled.div`
   width: 25px;
   background-color: #bbb;
@@ -103,11 +103,31 @@ const StoryText = styled.div`
   width: 100px;
   overflow-wrap: break-word;
 `;
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // 5열로 설정
+  grid-template-rows: repeat(5, 1fr); // 2행으로 설정
+  gap: 16px; // 박스 사이의 간격
+`;
+const Item = styled.div`
+  width: 100%; // 박스의 너비
+  height: 200px; // 박스의 높이
+  background-color: #ddd; // 박스의 배경색
+  display: flex;
+  flex-direction: column; // 자식 요소들을 수직으로 정렬
+  justify-content: center;
+  align-items: center;
+`;
 
 //메인페이지
 export default function Home() {
   const token = useRecoilValue(LoginAuthToken);
   console.log("token : ", token);
+
   return (
     <div>
       <NavBar></NavBar>
@@ -130,22 +150,7 @@ export default function Home() {
         </SearchIcon>
       </OptionContainer>
       <Container>
-        <StoryBox>
-          <StoryProfile>사진</StoryProfile>
-          <StoryText>t11111111111111111111111111111111111111</StoryText>
-        </StoryBox>
-        <StoryBox>
-          <StoryProfile>사진</StoryProfile>
-          <StoryText>t11111111111111111111111111111111111111</StoryText>
-        </StoryBox>
-        <StoryBox>
-          <StoryProfile>사진</StoryProfile>
-          <StoryText>t11111111111111111111111111111111111111</StoryText>
-        </StoryBox>
-        <StoryBox>
-          <StoryProfile>사진</StoryProfile>
-          <StoryText>t11111111111111111111111111111111111111</StoryText>
-        </StoryBox>
+        <Grid></Grid>
       </Container>
     </div>
   );

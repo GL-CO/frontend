@@ -104,9 +104,6 @@ export default function Writings() {
   const [currentPage, setCurrentPage] = useState(0); // ?
   const [totalPageCount, setTotalPageCount] = useState(0);
   const location = useLocation();
-  // let currentPageNumber; // 현재 페이지 번호
-  // let totalContentCount; // 전체 글 수
-
   const GC2 = useRecoilState(GC2_URL);
   //세션스토리지 토큰
   function getTokenFromSessionStorage() {
@@ -168,7 +165,7 @@ export default function Writings() {
     ],
   });
   const [searchQuery, setSearchQuery] = useState({
-    languageTag: "English",
+    languageTag: "Korean", //English
     keyword: "",
     pageNumber: 0,
     pageSize: pageSize,
@@ -207,7 +204,9 @@ export default function Writings() {
         console.error(err);
       });
   };
-
+  useEffect(() => {
+    setWritingsData(searchData);
+  }, [searchData]);
   return (
     <div>
       <NavBar></NavBar>
