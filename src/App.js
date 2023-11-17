@@ -10,7 +10,7 @@ import Writing from "./pages/Writing";
 import Edit from "./pages/Edit";
 import PageNotFound from "./pages/PageNotFound";
 import { RecoilRoot } from "recoil";
-
+import Read from "./pages/MywritePage";
 function App() {
   return (
     <RecoilRoot>
@@ -24,8 +24,8 @@ function App() {
           <Route path="/writings" element={<Writings />}></Route>
           <Route path="/writing" element={<Writing />}></Route>
           <Route path="/edit" element={<Edit />}></Route>
-          <Route path="/writing/:writingId" element={<Writing />}></Route>
-
+          <Route path="/writings/:writingId" element={<Writing />}></Route>
+          <Route path="/mywritepage" element={<Read />}></Route>
           <Route path="/*" element={<PageNotFound />}></Route>
         </Routes>
       </BrowserRouter>
