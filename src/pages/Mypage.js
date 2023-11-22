@@ -14,7 +14,7 @@ function MyPage() {
     nickname: "",
     email: "",
     points: "",
-    fluentLanguage: "",
+    usingLanguage: "",
     learningLanguage: "",
     profileImage: null,
   });
@@ -128,7 +128,7 @@ function MyPage() {
             <p>
               <strong> 구사 언어 </strong>
             </p>
-            <p>{userData.fluentLanguage}</p>
+            <p>{userData.usingLanguage}</p>
           </Circle>
           <Circle>
             <p>
