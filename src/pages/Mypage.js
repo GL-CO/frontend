@@ -27,7 +27,7 @@ function MyPage() {
     if (token) {
       fetchUserData(token, setUserData);
     }
-  }, [setUserData]); 
+  }, [setUserData]);
 
   // 사용자 정보 가져오는 함수
   const fetchUserData = async (token, setUserData) => {
@@ -38,7 +38,7 @@ function MyPage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      })
+      });
 
       if (response.ok) {
         const userData = await response.json();
@@ -47,7 +47,7 @@ function MyPage() {
         // 오류 처리
       }
     } catch (error) {
-      console.log("error")
+      console.log("error");
     }
   };
 
@@ -68,6 +68,61 @@ function MyPage() {
     const imageURL = URL.createObjectURL(imageFile);
     setUserData({ ...userData, profileImage: imageURL });
   };
+  const [mydata, setMyData] = useState({
+    totalPageCount: 1,
+    currentPageNumber: 0,
+    totalContentCount: 2,
+    contents: [
+      {
+        writingId: 0,
+        userId: 5,
+        nickname: "chaeyeon",
+        title: "TITLE",
+        content: "CONTENT",
+        languageTag: "English",
+        createdAt: "2023-10-04 17:14:31",
+        updatedAt: "2023-10-04 17:14:31",
+      },
+      {
+        writingId: 15,
+        userId: 5,
+        nickname: "chaeyeon",
+        title: "TITLE1",
+        content: "CONTENT1",
+        languageTag: "English",
+        createdAt: "2023-10-04 17:14:09",
+        updatedAt: "2023-10-04 17:14:09",
+      },
+    ],
+  });
+  const fetchmywrite = () => {
+    const query = "?pageSize=5&pageNumber=0";
+    const URL = `${GC2[0]}:8080/v1/writings/my${query}`;
+    const authToken = getTokenFromSessionStorage();
+    fetch(URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Response Error : ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("search Response : ", data);
+        setMyData(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  useEffect(() => {
+    fetchmywrite();
+  }, []);
 
   return (
     <div>
