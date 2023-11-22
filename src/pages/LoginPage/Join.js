@@ -92,7 +92,7 @@ const Join = () => {
             </Link>
           </Success>
         )}
-        <button onClick={toggleBoxButton}>박스 치우기</button>
+        {/* <button onClick={toggleBoxButton}>박스 치우기</button> */}
 
         <Container>
           <SignIncontainer>

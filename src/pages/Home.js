@@ -1,8 +1,10 @@
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LoginAuthToken } from "../Components/atoms";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { Link } from "react-router-dom";
+import { GC2_URL } from "../Components/atoms";
 const BgImage = styled.div`
   justify-content: center;
   display: flex;
@@ -127,7 +129,57 @@ const Item = styled.div`
 export default function Home() {
   const token = useRecoilValue(LoginAuthToken);
   console.log("token : ", token);
-
+  const [writingsData, setWritingsData] = useState({
+    totalPageCount: 0,
+    currentPageNumber: 0,
+    totalContentCount: 0,
+    contents: [
+      {
+        writingId: 0,
+        userId: 0,
+        nickname: "",
+        title: "",
+        content: "",
+        languageTag: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+  });
+  const pageSize = 4;
+  const pageNumber = 0;
+  useEffect(() => {
+    fetchWritings(pageNumber);
+  }, []);
+  const GC2 = useRecoilState(GC2_URL);
+  const fetchWritings = (pageNumber) => {
+    const query = `?pageSize=${pageSize}&pageNumber=${pageNumber}`;
+    const URL = `${GC2[0]}:8080/v1/writing${query}`;
+    const authToken = getTokenFromSessionStorage();
+    fetch(URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`writing Response Error : ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("response : ", data);
+        setWritingsData(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  function getTokenFromSessionStorage() {
+    return sessionStorage.getItem("authToken");
+  }
   return (
     <div>
       <NavBar></NavBar>
@@ -135,7 +187,7 @@ export default function Home() {
         <Title>소개</Title>
         <SubTitle>추가 소개</SubTitle>
       </BgImage>
-      <OptionContainer>
+      {/* <OptionContainer>
         <Tag>I'm tag</Tag>
         <Search type="text" placeholder="검색"></Search>
         <SearchIcon
@@ -148,9 +200,18 @@ export default function Home() {
         >
           <path d="M 21 3 C 11.654545 3 4 10.654545 4 20 C 4 29.345455 11.654545 37 21 37 C 24.701287 37 28.127393 35.786719 30.927734 33.755859 L 44.085938 46.914062 L 46.914062 44.085938 L 33.875 31.046875 C 36.43682 28.068316 38 24.210207 38 20 C 38 10.654545 30.345455 3 21 3 z M 21 5 C 29.254545 5 36 11.745455 36 20 C 36 28.254545 29.254545 35 21 35 C 12.745455 35 6 28.254545 6 20 C 6 11.745455 12.745455 5 21 5 z"></path>
         </SearchIcon>
-      </OptionContainer>
+      </OptionContainer> */}
       <Container>
-        <Grid></Grid>
+        <Grid>
+          {writingsData.contents.map((v, i) => (
+            <Link to={`/${v.writingId}`}>
+              <Item key={i}>
+                <h3>{v.title}</h3>
+                <p>{v.content}</p>
+              </Item>
+            </Link>
+          ))}
+        </Grid>
       </Container>
     </div>
   );
