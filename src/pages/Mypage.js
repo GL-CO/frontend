@@ -1,25 +1,55 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../Components/NavBar";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
 import { GC2_URL } from "../Components/atoms";
-import AuthContext from "../Components/AuthContext";
-import AuthProvider from "../Components/AuthProvider";
+import { useRecoilState } from "recoil";
 
+function getTokenFromSessionStorage() {
+  return sessionStorage.getItem("authToken");
+}
 //마이페이지
 function MyPage() {
   const [userData, setUserData] = useState({
-    username: "사용자 이름",
-    nickname: "사용자 별명",
-    email: "사용자 이메일",
-    points: 100,
-    fluentLanguage: "한국어",
-    learningLanguage: "영어",
+    username: "",
+    nickname: "",
+    email: "",
+    points: "",
+    fluentLanguage: "",
+    learningLanguage: "",
     profileImage: null,
   });
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState("");
-  const authContext = useContext(AuthContext);
+  const GC2 = useRecoilState(GC2_URL);
+
+  useEffect(() => {
+    const token = getTokenFromSessionStorage(); // 세션 스토리지에서 토큰을 가져옴
+    if (token) {
+      fetchUserData(token, setUserData);
+    }
+  }, [setUserData]); 
+
+  // 사용자 정보 가져오는 함수
+  const fetchUserData = async (token, setUserData) => {
+    try {
+      const response = await fetch(`${GC2[0]}:8080/v1/user`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (response.ok) {
+        const userData = await response.json();
+        setUserData(userData);
+      } else {
+        // 오류 처리
+      }
+    } catch (error) {
+      console.log("error")
+    }
+  };
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -37,44 +67,6 @@ function MyPage() {
     // 예시: URL을 받아온 경우
     const imageURL = URL.createObjectURL(imageFile);
     setUserData({ ...userData, profileImage: imageURL });
-  };
-
-  const GC2 = useRecoilState(GC2_URL);
-  //세션스토리지 토큰
-  function getTokenFromSessionStorage() {
-    return sessionStorage.getItem("authToken");
-  }
-
-  const addFriend = (friendUserId) => {
-    const authToken = getTokenFromSessionStorage();
-    const URL = `${GC2[0]}:8080/v1/request`;
-    const currentUserId = authContext.userId;
-
-    fetch(URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-      body: JSON.stringify({
-        friendUserId: friendUserId,
-        currentUserId: currentUserId,
-      }),
-    })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`응답 오류: ${res.status}`);
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log("친구 추가 성공: ", data);
-      // UI 업데이트 또는 응답에 따른 처리를 수행할 수 있습니다
-    })
-    .catch((err) => {
-      console.error("친구 추가 오류: ", err);
-      // 오류 처리, 메시지 표시 또는 기타 작업 수행
-    });
   };
 
   return (
@@ -149,10 +141,8 @@ function MyPage() {
         <SeparatorLine />
 
         <FriendContainer>
-          <p>친구 목록</p>
-              <button onClick={() => addFriend(authContext.userId)}>친구 추가</button>
+          <p> 친구 목록</p>
         </FriendContainer>
-
 
         <WrittenContainer>
           <p> 작성글 </p>
