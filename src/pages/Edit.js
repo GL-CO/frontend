@@ -86,7 +86,7 @@ const Comment = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  background-color:#0056b3 ;
+  background-color: #0056b3;
   color: white;
   border: none;
   border-radius: 3px;
@@ -112,16 +112,6 @@ export default function Edit() {
         type: "공지",
         title: "서비스 업데이트 안내",
         content: "서비스가 업데이트 되었습니다. 새로운 기능을 확인해보세요!",
-      },
-      {
-        type: "소식",
-        title: "이벤트 안내",
-        content: "이번 주말에 특별 이벤트가 진행됩니다. 참여하세요!",
-      },
-      {
-        type: "일반",
-        title: "질문이 있어요",
-        content: "앱 사용 관련 질문이 있습니다. 도와주세요.",
       },
     ];
 
@@ -179,7 +169,11 @@ export default function Edit() {
                 {message.comments.map((comment, commentIndex) => (
                   <Comment key={commentIndex}>
                     {comment}
-                    <DeleteButton onClick={() => handleDeleteComment(index, commentIndex)}>삭제</DeleteButton>
+                    <DeleteButton
+                      onClick={() => handleDeleteComment(index, commentIndex)}
+                    >
+                      삭제
+                    </DeleteButton>
                   </Comment>
                 ))}
                 {activeMessageIndex === index && (
@@ -190,12 +184,18 @@ export default function Edit() {
                       value={commentText}
                       onChange={(e) => setCommentText(e.target.value)}
                     />
-                    <CommentButton onClick={handleAddComment}>댓글 추가</CommentButton>
-                    <CommentButton onClick={handleCloseComment}>닫기</CommentButton>
+                    <CommentButton onClick={handleAddComment}>
+                      댓글 추가
+                    </CommentButton>
+                    <CommentButton onClick={handleCloseComment}>
+                      닫기
+                    </CommentButton>
                   </CommentInputContainer>
                 )}
                 {!activeMessageIndex && (
-                  <CommentButton onClick={() => handleComment(index)}>댓글 달기</CommentButton>
+                  <CommentButton onClick={() => handleComment(index)}>
+                    댓글 달기
+                  </CommentButton>
                 )}
               </CommentSection>
             </MessageContainer>
