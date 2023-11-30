@@ -5,49 +5,65 @@ import { Link } from "react-router-dom";
 import { GC2_URL } from "../Components/atoms";
 import { useRecoilState } from "recoil";
 
-const MywritePage = () => {
+function MywritePage () {
+  const pageSize = 5;
+  const [pageNumber, setPageNumber] = useState(0);
   const initialDisplayCount = 5;
   const [displayCount, setDisplayCount] = useState(initialDisplayCount);
   const [userWritings, setUserWritings] = useState([]);
-  const [token, setToken] = useState(""); // 토큰 상태 추가
   const [GC2] = useRecoilState(GC2_URL);
+  const [writepageData, setWritePageData] = useState({
+    totalPageCount: 0,
+    currentPageNumber: 0,
+    totalContentCount: 0,
+    contents: [
+      {
+        writingId: 0,
+        userId: 0,
+        nickname: "",
+        title: "",
+        content: "",
+        languageTag: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+  });
 
+  function getTokenFromSessionStorage() {
+    return sessionStorage.getItem("authToken");
+  }
 
-  // 세션 스토리지에서 토큰 가져오기
-  useEffect(() => {
-    const storedToken = sessionStorage.getItem("authToken");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
-  
-  
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${GC2}:8080/v1/user/writings/my`, {
+  const fetchData = () => {
+    const query = `?pageSize=${pageSize}&pageNumber=${pageNumber}`; // 쿼리 파라미터 생성
+    const URL = `${GC2}:8080/v1/user/writings/my${query}`;
+    const authToken = getTokenFromSessionStorage();
+
+    fetch(URL, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authToken}`,
         },
+      })
+      .then((response)=>{
+        if (!response.ok) {
+          throw new Error(`writing Response Error : ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log ("response : ", data);
+        setWritePageData(data);
+      })
+      .catch((err) => {
+        console.error(err);
       });
-  
-      if (response.ok) {
-        const data = await response.json();
-        setUserWritings(data.contents);
-        console.log(data.contents);
-      } else {
-        throw new Error('Failed to fetch data');
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };  
-  
+  };
+
   useEffect(() => {
     fetchData();
-  }, [token, GC2]);
-  
-  
+  }, []);
 
   const handleLoadMore = () => {
     setDisplayCount(displayCount + 5);
@@ -61,19 +77,17 @@ const MywritePage = () => {
         <MywriteTable>
           <thead>
             <tr>
-              <MywriteTableHeader>번호</MywriteTableHeader>
-              <MywriteTableHeader>제목</MywriteTableHeader>
-              <MywriteTableHeader>글쓴이</MywriteTableHeader>
-              <MywriteTableHeader>날짜</MywriteTableHeader>
+              <MywriteTableHeader>번호:{writepageData.writingId}</MywriteTableHeader>
+              <MywriteTableHeader>제목:{writepageData.title} </MywriteTableHeader>
+              <MywriteTableHeader>글쓴이:{writepageData.nickname} </MywriteTableHeader>
+              <MywriteTableHeader>날짜: {writepageData.createdAt}</MywriteTableHeader>
             </tr>
           </thead>
           <tbody>
-            {(userWritings.slice(0, displayCount)).map((blog) => (
-              <tr key={blog.writingId}>
+            {writepageData.contents.map((blog, index) => (
+              <tr key={index}>
                 <MywriteTableCell>{blog.writingId}</MywriteTableCell>
-                <MywriteTableCell>
-                  <Link to={`/writing/${blog.writingId}`}>{blog.title}</Link>
-                </MywriteTableCell>
+                <MywriteTableCell>{blog.title}</MywriteTableCell>
                 <MywriteTableCell>{blog.nickname}</MywriteTableCell>
                 <MywriteTableCell>{blog.createdAt}</MywriteTableCell>
               </tr>
