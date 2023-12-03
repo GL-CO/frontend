@@ -129,14 +129,14 @@ function Writing2() {
   }, []);
 
   //////////////////////////
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState([]); //댓글리스트
+  const [newComment, setNewComment] = useState(""); //댓글input
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (newComment.trim() !== "") {
       setComments([...comments, newComment]);
-      fetch(CommentRead(newComment);)
+      fetchCommentWrite(newComment);
       setNewComment("");
     }
   };
@@ -167,7 +167,7 @@ function Writing2() {
   useEffect(() => {
     fetchCommentRead();
   }, []);
-  const fetchCommentWrite = (newComment) => {
+  const fetchCommentWrite = (comment) => {
     const URL = `${GC2[0]}:8080/v1/correction`;
     const authToken = getTokenFromSessionStorage();
     console.log(URL);
@@ -177,7 +177,7 @@ function Writing2() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
-        body: JSON.stringify(newComment),
+      body: JSON.stringify(comment),
     })
       .then((res) => {
         if (!res.ok) {
