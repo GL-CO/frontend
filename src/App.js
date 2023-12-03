@@ -1,4 +1,4 @@
-import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
 import React from "react";
 import Login from "./pages/LoginPage/Login";
 import Write from "./pages/Write";
@@ -11,6 +11,8 @@ import Edit from "./pages/Edit";
 import PageNotFound from "./pages/PageNotFound";
 import { RecoilRoot } from "recoil";
 import Read from "./pages/MywritePage";
+import Tmp from "./pages/tmp";
+import Writing2 from "./pages/Writing2";
 function App() {
   return (
     <RecoilRoot>
@@ -26,6 +28,8 @@ function App() {
           <Route path="/edit" element={<Edit />}></Route>
           <Route path="/writings/:writingId" element={<Writing />}></Route>
           <Route path="/mywritepage" element={<Read />}></Route>
+          <Route path="/tmp" element={<Tmp />}></Route>
+          <Route path="/tmp/:writingId" element={<Writing2 />}></Route>
           <Route path="/*" element={<PageNotFound />}></Route>
         </Routes>
       </BrowserRouter>
