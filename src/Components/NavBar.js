@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import React, { useEffect, useState}from 'react';
+import React, { useEffect, useState } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -67,7 +67,6 @@ const LogoutButton = styled.button`
   }
 `;
 
-
 export default function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -82,7 +81,7 @@ export default function NavBar() {
   const handleLogout = () => {
     localStorage.setItem("isLoggedIn", "false");
     setIsLoggedIn(false);
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -99,21 +98,19 @@ export default function NavBar() {
         {/* <MenuItem href="/">문의</MenuItem> */}
       </MenuContainer>
       <ButtonContainer>
-
         {isLoggedIn ? (
-          <LogoutButton onClick= {handleLogout}> Logout </LogoutButton>
+          <LogoutButton onClick={handleLogout}> Logout </LogoutButton>
         ) : (
           <>
-             <Link to="/login">
+            <Link to="/login">
               <SignInButton>Sign In</SignInButton>
-             </Link>
+            </Link>
 
-             <Link to="/join">
-            <SignUpButton>Sign Up</SignUpButton>
+            <Link to="/join">
+              <SignUpButton>Sign Up</SignUpButton>
             </Link>
           </>
         )}
-
       </ButtonContainer>
     </Container>
   );
