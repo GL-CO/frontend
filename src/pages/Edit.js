@@ -86,7 +86,7 @@ const Comment = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  background-color:#0056b3 ;
+  background-color: #0056b3;
   color: white;
   border: none;
   border-radius: 3px;
@@ -179,7 +179,11 @@ export default function Edit() {
                 {message.comments.map((comment, commentIndex) => (
                   <Comment key={commentIndex}>
                     {comment}
-                    <DeleteButton onClick={() => handleDeleteComment(index, commentIndex)}>삭제</DeleteButton>
+                    <DeleteButton
+                      onClick={() => handleDeleteComment(index, commentIndex)}
+                    >
+                      삭제
+                    </DeleteButton>
                   </Comment>
                 ))}
                 {activeMessageIndex === index && (
@@ -190,12 +194,18 @@ export default function Edit() {
                       value={commentText}
                       onChange={(e) => setCommentText(e.target.value)}
                     />
-                    <CommentButton onClick={handleAddComment}>댓글 추가</CommentButton>
-                    <CommentButton onClick={handleCloseComment}>닫기</CommentButton>
+                    <CommentButton onClick={handleAddComment}>
+                      댓글 추가
+                    </CommentButton>
+                    <CommentButton onClick={handleCloseComment}>
+                      닫기
+                    </CommentButton>
                   </CommentInputContainer>
                 )}
                 {!activeMessageIndex && (
-                  <CommentButton onClick={() => handleComment(index)}>댓글 달기</CommentButton>
+                  <CommentButton onClick={() => handleComment(index)}>
+                    댓글 달기
+                  </CommentButton>
                 )}
               </CommentSection>
             </MessageContainer>

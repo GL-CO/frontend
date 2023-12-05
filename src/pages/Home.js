@@ -24,15 +24,16 @@ const Title = styled.h2`
 const SubTitle = styled.p`
   font-size: 14px;
 `;
+
 const OptionContainer = styled.div`
   display: flex;
   align-items: center;
-  text-align: center;
-  padding: 16px;
-  margin-top: 200px;
-  //위에 여백 추가로두기
-  /* background-color: #f0f0f0; */
+  justify-content: center;
+  /* 아래의 width 속성을 조정하여 가로 길이를 지정하세요 */
+  width: 10%;
+  margin: 0 auto; 수평 가운데 정렬을 위해 추가
 `;
+
 const Tag = styled.div`
   align-items: center;
   width: 10%;
@@ -44,24 +45,23 @@ const Tag = styled.div`
   margin-left: 100px;
 `;
 const Search = styled.input`
-  width: 10%;
+  width: 70%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-right: 10px;
   transition: width 0.2s ease;
   &:hover {
-    width: 30%;
+    width: 70%;
   }
   &:focus {
-    width: 30%;
+    width: 70%;
     &::placeholder {
       color: transparent;
     }
   }
 `;
 const SearchIcon = styled.svg`
-  margin-right: auto;
   &:hover {
     cursor: pointer;
   }
@@ -112,7 +112,7 @@ const Container = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr); // 5열로 설정
-  grid-template-rows: repeat(5, 1fr); // 2행으로 설정
+  grid-template-rows: repeat(2, 1fr); // 2행으로 설정
   gap: 16px; // 박스 사이의 간격
 `;
 const Item = styled.div`
@@ -187,32 +187,35 @@ export default function Home() {
         <Title>소개</Title>
         <SubTitle>추가 소개</SubTitle>
       </BgImage>
-      {/* <OptionContainer>
-        <Tag>I'm tag</Tag>
-        <Search type="text" placeholder="검색"></Search>
-        <SearchIcon
-          xmlns="http://www.w3.org/2000/svg"
-          x="0px"
-          y="0px"
-          width="30"
-          height="30"
-          viewBox="0 0 50 50"
-        >
-          <path d="M 21 3 C 11.654545 3 4 10.654545 4 20 C 4 29.345455 11.654545 37 21 37 C 24.701287 37 28.127393 35.786719 30.927734 33.755859 L 44.085938 46.914062 L 46.914062 44.085938 L 33.875 31.046875 C 36.43682 28.068316 38 24.210207 38 20 C 38 10.654545 30.345455 3 21 3 z M 21 5 C 29.254545 5 36 11.745455 36 20 C 36 28.254545 29.254545 35 21 35 C 12.745455 35 6 28.254545 6 20 C 6 11.745455 12.745455 5 21 5 z"></path>
-        </SearchIcon>
-      </OptionContainer> */}
-      <Container>
-        <Grid>
-          {writingsData.contents.map((v, i) => (
-            <Link to={`/${v.writingId}`}>
-              <Item key={i}>
-                <h3>{v.title}</h3>
-                <p>{v.content}</p>
-              </Item>
-            </Link>
-          ))}
-        </Grid>
-      </Container>
+      <Link to="/writings">
+        <Container>
+          <Grid>
+            {writingsData.contents.map((v, i) => (
+              <Link to={`/writings/${v.writingId}`}>
+                <Item key={i}>
+                  <h3>{v.title}</h3>
+                  <p>{v.content}</p>
+                </Item>
+              </Link>
+            ))}
+          </Grid>
+        </Container>
+        <OptionContainer>
+          <form>
+            <Search type="text" placeholder="검색"></Search>
+          </form>
+          <SearchIcon
+            xmlns="http://www.w3.org/2000/svg"
+            x="03px"
+            y="0px"
+            width="50"
+            height="50"
+            viewBox="0 0 50 50"
+          >
+            <path d="M 21 3 C 11.654545 3 4 10.654545 4 20 C 4 29.345455 11.654545 37 21 37 C 24.701287 37 28.127393 35.786719 30.927734 33.755859 L 44.085938 46.914062 L 46.914062 44.085938 L 33.875 31.046875 C 36.43682 28.068316 38 24.210207 38 20 C 38 10.654545 30.345455 3 21 3 z M 21 5 C 29.254545 5 36 11.745455 36 20 C 36 28.254545 29.254545 35 21 35 C 12.745455 35 6 28.254545 6 20 C 6 11.745455 12.745455 5 21 5 z"></path>
+          </SearchIcon>
+        </OptionContainer>
+      </Link>
     </div>
   );
 }
