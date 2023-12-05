@@ -114,7 +114,7 @@ function Writing2() {
         return res.json();
       })
       .then((data) => {
-        console.log("Writing response : ", data);
+        // console.log("Writing response : ", data);
         setWritingData(data);
       })
       .catch((err) => {
@@ -128,26 +128,10 @@ function Writing2() {
   //////////////////////////
   const [comments, setComments] = useState([]); //댓글리스트
   const [newComment, setNewComment] = useState(""); //댓글input
-  const [apiComments, setApiComments] = useState({});
-
-  //
-  const initialData = {
-    contents: [{ writingId: 1, content: "" }],
-  };
-
-  const [data, setData] = useState(initialData);
-
-  // 2번째 속성을 추가하는 함수
-  const addSecondContent = () => {
-    // 현재 상태를 복제
-    const newData = { ...data };
-
-    // contents 배열에 새 항목 추가
-    newData.contents.push({ writingId: 2, content: "" });
-
-    // 상태 업데이트
-    setData(newData);
-  };
+  const [apiComments, setApiComments] = useState({
+    datas: [{ writingId: 0, content: "" }],
+    length: 0,
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -174,7 +158,15 @@ function Writing2() {
         return res.json();
       })
       .then((data) => {
-        console.log("CommentRead Response : ", data);
+        const responseArray = Object.values(data).filter(
+          (item) => typeof item === "object"
+        );
+        const length = data.length;
+
+        setApiComments({
+          datas: responseArray,
+          length: length,
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -184,7 +176,8 @@ function Writing2() {
   useEffect(() => {
     fetchCommentRead();
     console.log("api comment", apiComments);
-  }, [apiComments]);
+  }, []);
+
   const fetchCommentWrite = (comment) => {
     const reqBody = {
       writingId: writingId,
@@ -207,8 +200,7 @@ function Writing2() {
         return res.json();
       })
       .then((data) => {
-        console.log("CommentRead Response : ", data);
-        setApiComments(data);
+        // console.log("CommentRead Response : ", data);
       })
       .catch((err) => {
         console.error(err);
