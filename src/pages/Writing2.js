@@ -97,11 +97,9 @@ function Writing2() {
   function getTokenFromSessionStorage() {
     return sessionStorage.getItem("authToken");
   }
-  console.log(writingId);
   const fetchWriting = () => {
     const URL = `${GC2[0]}:8080/v1/writing/${writingId}`;
     const authToken = getTokenFromSessionStorage();
-    console.log(URL);
     fetch(URL, {
       method: "GET",
       headers: {
@@ -116,7 +114,7 @@ function Writing2() {
         return res.json();
       })
       .then((data) => {
-        console.log("Writing response : ", data);
+        // console.log("Writing response : ", data);
         setWritingData(data);
       })
       .catch((err) => {
@@ -125,25 +123,27 @@ function Writing2() {
   };
   useEffect(() => {
     fetchWriting();
-    console.log("writingData :", writingData);
   }, []);
 
   //////////////////////////
   const [comments, setComments] = useState([]); //댓글리스트
   const [newComment, setNewComment] = useState(""); //댓글input
+  const [apiComments, setApiComments] = useState({
+    datas: [{ writingId: 0, content: "" }],
+    length: 0,
+  });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (newComment.trim() !== "") {
+      await fetchCommentWrite(newComment);
       setComments([...comments, newComment]);
-      fetchCommentWrite(newComment);
       setNewComment("");
     }
   };
   const fetchCommentRead = () => {
     const URL = `${GC2[0]}:8080/v1/correction`;
     const authToken = getTokenFromSessionStorage();
-    console.log(URL);
     fetch(URL, {
       method: "GET",
       headers: {
@@ -158,26 +158,40 @@ function Writing2() {
         return res.json();
       })
       .then((data) => {
-        console.log("CommentRead Response : ", data);
+        const responseArray = Object.values(data).filter(
+          (item) => typeof item === "object"
+        );
+        const length = data.length;
+
+        setApiComments({
+          datas: responseArray,
+          length: length,
+        });
       })
       .catch((err) => {
         console.error(err);
       });
   };
+
   useEffect(() => {
     fetchCommentRead();
+    console.log("api comment", apiComments);
   }, []);
+
   const fetchCommentWrite = (comment) => {
+    const reqBody = {
+      writingId: writingId,
+      content: comment,
+    };
     const URL = `${GC2[0]}:8080/v1/correction`;
     const authToken = getTokenFromSessionStorage();
-    console.log(URL);
     fetch(URL, {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
-      body: JSON.stringify(comment),
+      body: JSON.stringify(reqBody),
     })
       .then((res) => {
         if (!res.ok) {
@@ -186,12 +200,13 @@ function Writing2() {
         return res.json();
       })
       .then((data) => {
-        console.log("CommentRead Response : ", data);
+        // console.log("CommentRead Response : ", data);
       })
       .catch((err) => {
         console.error(err);
       });
   };
+
   return (
     <div>
       <NavBar></NavBar>
