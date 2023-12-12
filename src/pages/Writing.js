@@ -38,7 +38,43 @@ const AuthorParagraph = styled.p`
   font-size: 16px;
   font-weight: bold;
 `;
+const CommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 수평 정렬 */
+  justify-content: center; /* 수직 정렬 */
+`;
+const CommentList = styled.ul`
+  list-style: none;
+  padding: 0;
+`;
 
+const CommentItem = styled.li`
+  border: 1px solid #eee;
+  padding: 10px;
+  margin: 5px 0;
+  width: 500px;
+`;
+
+const CommentForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const CommentInput = styled.input`
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 500px;
+`;
+
+const CommentButton = styled.button`
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 525px;
+`;
 function Writing() {
   const { writingId } = useParams();
   const [writingData, setWritingData] = useState({
@@ -85,6 +121,70 @@ function Writing() {
     fetchWriting();
     console.log("writingData :", writingData);
   }, []);
+
+  const [comments, setComments] = useState([]); //댓글리스트
+  const [newComment, setNewComment] = useState(""); //댓글input
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (newComment.trim() !== "") {
+      setComments([...comments, newComment]);
+      fetchCommentWrite(newComment);
+      setNewComment("");
+    }
+  };
+  const fetchCommentRead = () => {
+    const URL = `${GC2[0]}:8080/v1/correction`;
+    const authToken = getTokenFromSessionStorage();
+    console.log(URL);
+    fetch(URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Response Error : ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("CommentRead Response : ", data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  useEffect(() => {
+    fetchCommentRead();
+  }, []);
+  const fetchCommentWrite = (comment) => {
+    const URL = `${GC2[0]}:8080/v1/correction`;
+    const authToken = getTokenFromSessionStorage();
+    console.log(URL);
+    fetch(URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify(comment),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Response Error : ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("CommentRead Response : ", data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   return (
     <div>
       <NavBar></NavBar>
@@ -94,6 +194,22 @@ function Writing() {
         <TitleHeading>{writingData.title}</TitleHeading>
         <ContentParagraph>{writingData.content}</ContentParagraph>
       </ContentBox>
+      <CommentContainer>
+        <CommentList>
+          {comments.map((comment, index) => (
+            <CommentItem key={index}>{comment}</CommentItem>
+          ))}
+        </CommentList>
+        <CommentForm onSubmit={handleSubmit}>
+          <CommentInput
+            type="text"
+            placeholder="댓글을 입력하세요"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+          <CommentButton type="submit">댓글 달기</CommentButton>
+        </CommentForm>
+      </CommentContainer>
     </div>
   );
 }
